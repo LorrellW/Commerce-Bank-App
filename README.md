@@ -1,7 +1,6 @@
 # Commerce-Bank-App
 Commerce-Bank-App is a modern, high-performance web application for core banking tasks like account management and transaction processing. Built on **React** with **Next.js** and file-based routing for seamless navigation, it leverages **Tailwind CSS** for efficient styling. A **SQL** database ensures robust data persistence, while the **latest Node.js** and **npm** power the stack. Developed in **Visual Studio Code (VS Code)**.
 
-A banking/ecommerce-style application built with the **latest Next.js**, **Node.js**, and **npm**, developed using **Visual Studio Code (VS Code)**.
 
 ---
 
@@ -37,24 +36,28 @@ Make sure you have the following installed on your system:
 ## Installation
 
 1. **Clone the Repository**  
-   using:`bash`
-   git clone https://github.com/your-username/Commerce-Bank-App.git
-   cd Commerce-Bank-App
+   using: *bash*
+   
+   `git clone https://github.com/your-username/Commerce-Bank-App.git`
+   
+   `cd Commerce-Bank-App`
 
 ---
 
 ## Development
 
-Start the Development Server
+1. **Start the Development Server**
+   using: *bash* 
 
-using:`bash` 
-npm run dev
-
-*Open the App*
-Navigate to http://localhost:3000 in your browser. You should see the Commerce-Bank-App home page.
-
-*In VS Code* (optional)
-"...extensive extensions, integrated debugging, seamless Git support, and top-notch TypeScript/JavaScript intelligence—with a lightweight footprint and open-source ethos".
+   `npm run dev`
+   
+   *Open the App*
+   Navigate to http://localhost:3000 in your browser. You should see the Commerce-Bank-App home 
+   page.
+   
+   *In VS Code* (optional)
+   "...extensive extensions, integrated debugging, seamless Git support, and top-notch       
+    TypeScript/JavaScript intelligence—with a lightweight footprint and open-source ethos".
 
 ---
 
@@ -64,11 +67,11 @@ Navigate to http://localhost:3000 in your browser. You should see the Commerce-B
 
 ## Scripts
 
-*Command*	            *Description*
-npm run dev	        Starts the development server at http://localhost:3000
-npm run build	    Builds the production-ready application
-npm start	        Runs the built application in production mode
-npm run lint	    Lints the project for code style and errors
+*Command* -----> *Description*
+- `npm run dev` - Starts the development server at http://localhost:3000
+- `npm run build` - Builds the production-ready application
+- `npm start` - Runs the built application in production mode
+- `npm run lint` - Lints the project for code style and errors
 
 ---
 
@@ -76,7 +79,7 @@ npm run lint	    Lints the project for code style and errors
 
 ---
 
-## Licensing
+## License
 
 GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
