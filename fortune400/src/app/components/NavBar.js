@@ -6,15 +6,22 @@ import layout from "@/app/layout";
 
 const Navbar = () =>{
     return(
-        <nav className="navbar flex font-geist-mono flex-row items-center p-4">
-        <h2 className="navbar flex-row font-geist-mono">This is the NavBar</h2>
-        <div className="nav-links flex font-geist-mono text-xl bg-red ml-20 space-x-4">
-        <Link href="/">Home</Link>
-        <Link href="/account">Account</Link>
-        <Link href="/taxes">Taxes</Link>
-        <Link href="/Ai">Ai</Link>
-        <Link href="/settings">Settings</Link>
+        <nav className="navbar flex-row  font-geist-mono items-center p-4">
+        <h2 className="navbar flex-row font-geist-mono text-2xl">Fortune400</h2>
+
+        <div className="nav-link-all flex w-min-screen bg-white justify-center font-geist-mono text-lg p-8 space-x-20">
+        
+        <Link className="text-black hover:text-gray-700" href="/">Home</Link>
+
+        <Link className="text-black  hover:text-gray-700" href="/account">Account</Link>
+
+        <Link className="text-black hover:text-gray-700" href="/taxes">Taxes</Link>
+
+        <Link className="text-black hover:text-gray-700" href="/Ai">Ai</Link>
+
+        <Link className="text-black hover:text-gray-700" href="/settings">Settings</Link>
         </div>
+
         </nav>
     );
 };
