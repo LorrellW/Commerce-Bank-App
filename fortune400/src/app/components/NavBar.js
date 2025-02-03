@@ -21,7 +21,6 @@ const Navbar = () =>{
 
         <Link className="text-black hover:text-gray-700" href="/settings">Settings</Link>
         </div>
-
         </nav>
     );
 };
