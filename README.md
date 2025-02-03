@@ -41,6 +41,8 @@ Make sure you have the following installed on your system:
    `git clone https://github.com/your-username/Commerce-Bank-App.git`
    
    `cd Commerce-Bank-App`
+   
+   `cd fortune400`  
 
 ---
 
