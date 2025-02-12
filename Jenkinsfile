@@ -14,7 +14,8 @@ pipeline {
                 ls -la
                 node --version
                 npm --version
-                npm install
+                npm ci
+                npm install typescript
                 npm run build
                 ls -la
                 '''
