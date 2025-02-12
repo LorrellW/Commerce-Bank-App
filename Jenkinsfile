@@ -14,16 +14,18 @@ pipeline {
                 ls -la
                 node --version
                 npm --version
-                npm ci
-                npm run
+                cd fortune400
+                npm ci 
+                npm run build
                 ls -la
                 '''
             }
         }
+    }
+
     stage('Test') {
         steps {
-            echo 'Test stage'
-            }
+            sh 'test -f .next/BUILD_ID'
         }
     }
 }
