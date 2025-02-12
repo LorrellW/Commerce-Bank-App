@@ -14,6 +14,7 @@ pipeline {
                 ls -la
                 node --version
                 npm --version
+                cd fortune400
                 npm ci 
                 npm run build
                 ls -la
