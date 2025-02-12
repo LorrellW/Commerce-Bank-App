@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import layout from "@/app/layout";
+// import layout from "@/app/layout";
 
 const Navbar = () =>{
     return(
