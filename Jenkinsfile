@@ -21,11 +21,10 @@ pipeline {
                 '''
             }
         }
-    }
-
-    stage('Test') {
+        stage('Test') {
         steps {
             sh 'test -f .next/BUILD_ID'
         }
+    }
     }
 }
