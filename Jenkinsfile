@@ -14,9 +14,10 @@ pipeline {
                 ls -la
                 node --version
                 npm --version
+                cd fortune400
                 npm ci
                 npm install typescript
-                npm run
+                npm run build
                 ls -la
                 '''
             }
