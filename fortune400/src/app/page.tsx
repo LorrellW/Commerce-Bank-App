@@ -1,42 +1,34 @@
 // (root) page.tsx
+import G1 from "./graphic1.png";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start pt-28">
+    <div>
+      <div className="flex flex-grid-cols-2 items-center justify-evenly h-96 bg-secondary2">
+        <div className="flex-row justify-center">
+          <p className="text-5xl text-gray-600">Modern Banking</p>
+        <p className="text-5xl text-primary">Built for you.</p>
+        <p className="text-sm py-4 text-gray-600">Where to monitor all you financial needs.</p>
+        <button className="bg-primary px-6 mt-6 py-2 text-sm rounded-md">Register</button>
+
+        </div>
+        <div>
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
+          className="logo-style"
+          src={G1}
+          alt="Fortune400 Logo"
+          width={350}
+          height={80}
           priority
         />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-              <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+                
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-      </footer>
+        
     </div>
+    <div className="flex flex-grid-cols-2 items-center text-2xl text-primary justify-evenly h-96 bg-white">Our Tech
+            </div>
+          
+</div>
   );
 }
