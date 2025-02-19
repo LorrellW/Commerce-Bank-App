@@ -26,5 +26,8 @@ pipeline {
             sh 'test -f fortune400/.next/BUILD_ID'
         }
     }
+        stage('Deploy'){
+            sh''
+        }
     }
 }
