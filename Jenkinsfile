@@ -21,11 +21,13 @@ pipeline {
                 '''
             }
         }
-    }
-
-    stage('Test') {
+        stage('Test') {
         steps {
-            sh 'test -f .next/BUILD_ID'
+            sh 'test -f fortune400/.next/BUILD_ID'
+        }
+    }
+        stage('Deploy'){
+            sh''
         }
     }
 }
