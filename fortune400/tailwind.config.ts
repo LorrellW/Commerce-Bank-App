@@ -14,6 +14,8 @@ export default {
         primary: "#3B49A4",
         secondary: "#DCE7F2",
         secondary2: "#83B9FF",
+        darkText: "#4D4D4D",
+        lightText:"#717171",
         
 
       },

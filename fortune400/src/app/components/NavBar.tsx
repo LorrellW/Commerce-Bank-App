@@ -19,7 +19,7 @@ const Navbar = () => {
       </div>
 
       {/* Center Section - Navigation Links */}
-      <div className="flex justify-center text-sm space-x-10 font-geist-mono text-lg">
+      <div className="flex justify-center text-sm space-x-16 font-geist-mono">
         <Link className="text-black hover:text-gray-700" href="/">Home</Link>
         <Link className="text-black hover:text-gray-700" href="/pages/account">Account</Link>
         <Link className="text-black hover:text-gray-700" href="/pages/taxes">Dashboard</Link>
@@ -30,8 +30,8 @@ const Navbar = () => {
       {/* Right Section - Placeholder (Add Content Here) */}
       <div className="flex justify-end space-x-4 ">
         {/* Add buttons, user profile, icons, or any other content */}
-        <button className="bg-secondary rounded-md text-sm text-primary px-4 py-2 rounded">Login</button>
-        <button className="bg-primary text-white text-sm rounded-md px-4 py-2 rounded">Signup</button>
+        <button className="bg-secondary rounded-md text-sm text-primary px-4 py-2 ">Login</button>
+        <button className="bg-primary text-white text-sm rounded-md px-4 py-2 ">Signup</button>
       </div>
     </nav>
   );
