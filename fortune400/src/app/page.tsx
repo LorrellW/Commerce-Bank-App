@@ -1,42 +1,98 @@
 // (root) page.tsx
+import G1 from "./graphic1.png";
 import Image from "next/image";
+import Antsvg from "@/app/Icons/antD.svg"
+import figma from "@/app/Icons/figma.svg"
+import java from "@/app/Icons/java.svg"
+import javaScript from "@/app/Icons/javaScript.svg"
+import jenkins from "@/app/Icons/jenkins.svg"
+import nextJS from "@/app/Icons/nextJS.svg"
+import npm from "@/app/Icons/npm.svg"
+import react from "@/app/Icons/react.svg"
+import tailWind from "@/app/Icons/tailWind.svg"
+import ts from "@/app/Icons/ts.svg"
+
+
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start pt-28">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-              <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <section>
+        <div className="flex flex-grid-cols-2 items-center justify-evenly h-[600] bg-secondary2">
+          <div className="flex-row justify-center">
+            <p className="text-5xl text-gray-600">Modern Banking</p>
+            <p className="text-5xl text-primary">Built for you.</p>
+            <p className="text-sm py-4 text-gray-600">Where to monitor all you financial needs.</p>
+            <button className="bg-primary px-6 mt-6 py-2 text-sm rounded-md">Register</button>
+          </div>
+          <div>
+            <Image
+              className="cartoon-graphic-1"
+              src={G1}
+              alt="Fortune400 Logo"
+              width={400}
+              height={400}
+              priority
+            />
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-      </footer>
+      </section>
+
+      <section className="h-[600] bg-white">
+        <div className="flex-row space-y-8 py-6">
+          <p className="text-darkText text-center font-bold text-3xl"> Our Tech </p>
+          <p className="text-lightText text-center ">Reliable Banking backed by a roubust, and community supported tech stack</p>
+        </div>
+
+      <section className="flex">
+        <div className="flex">
+
+          <Image 
+              src={nextJS} 
+              alt="Next.JS Logo"></Image>
+
+          <Image 
+              src={npm} 
+              alt="Npm Logo"></Image>
+
+          <Image 
+              src={react} 
+              alt="React Logo"></Image>
+
+          <Image 
+              src={ts} 
+              alt="TypeScript Logo"></Image>
+          <Image 
+              src={Antsvg} 
+              alt="AntDesign Logo"></Image>
+
+          <Image 
+              src={tailWind} 
+              alt="tailWind Logo"></Image>
+
+          <Image 
+              src={figma} 
+              alt="Figma Logo"
+              width={100}></Image>
+
+          <Image 
+              src={java} 
+              alt="AntDesign Logo"></Image>
+
+          <Image 
+              src={javaScript} 
+              alt="javaScript Logo"></Image>
+
+          <Image 
+              src={jenkins} 
+              alt="jenkins Logo"></Image>
+
+
+
+        </div>
+      </section>
+      </section>
     </div>
   );
 }
