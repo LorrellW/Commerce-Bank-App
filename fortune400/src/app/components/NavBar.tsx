@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "@/app/F4-logo.png";
+import Logo from "@/app/Icons/F4-logo.png";
 
 const Navbar = () => {
   return (

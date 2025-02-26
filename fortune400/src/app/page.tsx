@@ -1,6 +1,7 @@
 // (root) page.tsx
-import G1 from "./graphic1.png";
+
 import Image from "next/image";
+import G1 from "@/app/Icons/graphic1.png";
 import Antsvg from "@/app/Icons/antD.svg"
 import figma from "@/app/Icons/figma.svg"
 import java from "@/app/Icons/java.svg"
