@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { SmileOutlined, HeartOutlined, StarOutlined } from "@ant-design/icons";
 
@@ -24,18 +23,18 @@ export default function Home() {
   return (
     <div className="pb-56">
       <section>
-        <div className="flex flex-grid-cols-2 items-center justify-evenly h-[600px] bg-secondary2">
-          <div className="flex flex-col justify-center">
-            <p className="text-5xl text-gray-600">Modern Banking</p>
-            <p className="text-5xl text-primary">Built for you.</p>
-            <p className="text-sm py-4 text-gray-600">
+        <div className="grid lg:grid-cols-2 items-center justify-items-center h-[600px] bg-secondary2">
+          <div className="flex-row">
+            <p className="lg:text-5xl text-4xl text-gray-600">Modern Banking</p>
+            <p className="lg:text-5xl text-4xl text-primary">Built for you.</p>
+            <p className="lg:text-sm py-4 text-gray-600">
               Where to monitor all your financial needs.
             </p>
-            <button className="bg-primary mt-6 py-2 text-sm rounded-md">
+            <button className="bg-primary mt-6 py-2 text-sm rounded w-[30%]">
               Register
             </button>
           </div>
-          <div>
+          <div className="hidden sm:block">
             <Image
               className="cartoon-graphic-1"
               src={G1}
@@ -59,22 +58,17 @@ export default function Home() {
         </div>
 
         <section className="place-items-center">
-          <div className="flex flex-col pt-6 space-y-8 justify-evenly">
-            <div className="flex space-x-10">
-              <Image src={nextJS} alt="Next.JS Logo" width={64} />
-              <Image src={npm} alt="Npm Logo" width={64} />
-              <Image src={react} alt="React Logo" width={64} />
-              <Image src={ts} alt="TypeScript Logo" width={64} />
-              <Image src={Antsvg} alt="AntDesign Logo" width={64} />
-            </div>
-
-            <div className="flex space-x-10">
-              <Image src={tailWind} alt="TailWind Logo" width={64} />
-              <Image src={figma} alt="Figma Logo" width={64} />
-              <Image src={java} alt="Java Logo" width={64} />
-              <Image src={javaScript} alt="JavaScript Logo" width={64} />
-              <Image src={jenkins} alt="Jenkins Logo" width={64} />
-            </div>
+          <div className="grid grid-cols-5 lg:grid-cols-10 lg:justify-center gap-10">
+            <Image src={nextJS} alt="Next.JS Logo" width={64} height={64} />
+            <Image src={npm} alt="Npm Logo" width={64} height={64} />
+            <Image src={react} alt="React Logo" width={64} height={64} />
+            <Image src={ts} alt="TypeScript Logo" width={64} height={64} />
+            <Image src={Antsvg} alt="AntDesign Logo" width={64} height={64} />
+            <Image src={tailWind} alt="TailWind Logo" width={64} height={64} />
+            <Image src={figma} alt="Figma Logo" width={64} height={64} />
+            <Image src={java} alt="Java Logo" width={64} height={64} />
+            <Image src={javaScript} alt="JavaScript Logo" width={64} height={64} />
+            <Image src={jenkins} alt="Jenkins Logo" width={64} height={64} />
           </div>
         </section>
 
@@ -87,21 +81,21 @@ export default function Home() {
           </p>
         </div>
         {/* Minimal Carousel Section using Ant Design Icons */}
-      <section className="bg-gray-300 w-[42%] mx-auto h-auto">
-        <div className="w-full">
-        <Carousel showThumbs={false} autoPlay infiniteLoop>
-        <div className="flex justify-center items-center h-64">
-              <SmileOutlined style={{ fontSize: "64px" }} />
-            </div>
-            <div className="flex justify-center items-center h-64">
-              <HeartOutlined style={{ fontSize: "64px" }} />
-            </div>
-            <div className="flex justify-center items-center h-64">
-              <StarOutlined style={{ fontSize: "64px" }} />
-            </div>
-          </Carousel>
-        </div>
-      </section>
+        <section className="bg-gray-300 w-[42%] mx-auto h-auto">
+          <div className="w-full">
+            <Carousel showThumbs={false} autoPlay infiniteLoop>
+              <div className="flex justify-center items-center h-64">
+                <SmileOutlined style={{ fontSize: "64px" }} />
+              </div>
+              <div className="flex justify-center items-center h-64">
+                <HeartOutlined style={{ fontSize: "64px" }} />
+              </div>
+              <div className="flex justify-center items-center h-64">
+                <StarOutlined style={{ fontSize: "64px" }} />
+              </div>
+            </Carousel>
+          </div>
+        </section>
         {/* <div className="flex grid-cols-3 gap-2 justify-evenly">
           <div className="w-[12%] bg-slate-600 h-[111px] flex items-center justify-center">
             1
@@ -115,7 +109,7 @@ export default function Home() {
         </div> */}
       </section>
 
-      
+
     </div>
   );
 }
