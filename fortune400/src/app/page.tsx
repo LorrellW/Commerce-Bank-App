@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import dynamic from "next/dynamic";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { SmileOutlined, HeartOutlined, StarOutlined } from "@ant-design/icons";
 
