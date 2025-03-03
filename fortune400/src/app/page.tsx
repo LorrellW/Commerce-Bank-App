@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { ArrowRightOutlined,  BankOutlined, BankTwoTone, UsergroupAddOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined,  BankOutlined } from "@ant-design/icons";
 import ThreeCard from "./components/threeCard";
 import G1 from "@/app/Icons/graphic1.png";
 import G2 from "@/app/Icons/pana.png";

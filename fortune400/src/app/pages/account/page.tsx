@@ -4,8 +4,21 @@ import { IdcardOutlined, PlusOutlined } from "@ant-design/icons";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { useState } from "react";
 
+interface Account {
+  key: string;
+  name: string;
+  age: number;
+  address: string;
+}
+
+interface AccountFormValues {
+  name: string;
+  age: number;
+  address: string;
+}
+
 export default function AccountPage() {
-  const [accounts, setAccounts] = useState([
+  const [accounts, setAccounts] = useState<Account[]>([
     {
       key: '1',
       name: 'Mike',
@@ -19,7 +32,8 @@ export default function AccountPage() {
       address: '10 Downing Street',
     },
   ]);
-  const [activeAccount, setActiveAccount] = useState(accounts[0]);
+
+  const [activeAccount, setActiveAccount] = useState<Account>(accounts[0]);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const columns = [
@@ -39,8 +53,8 @@ export default function AccountPage() {
   };
 
   // Handle form submission to add new account
-  const onFinish = (values: any) => {
-    const newAccount = {
+  const onFinish = (values: AccountFormValues) => {
+    const newAccount: Account = {
       key: String(accounts.length + 1),
       ...values,
     };
@@ -53,26 +67,34 @@ export default function AccountPage() {
     <section>
       <p className="text-6xl text-center text-black p-12">Hello, John Smith</p>
       {/* Render account card buttons dynamically */}
-      <div className=" shadow-xl grid grid-cols-3 gap-4 place-items-center">
+      <div className="shadow-xl grid grid-cols-3 gap-4 place-items-center">
         {accounts.map((account) => (
-          <Button className='shadow-md bg-gray-100 border-cyan-700 mb-10  w-[50%] h-full' key={account.key} onClick={() => setActiveAccount(account)}>
+          <Button
+            className="shadow-md bg-gray-100 border-cyan-700 mb-10 w-[50%] h-full"
+            key={account.key}
+            onClick={() => setActiveAccount(account)}
+          >
             <IdcardOutlined />
             {account.name}
           </Button>
         ))}
-        <Button className='grid grid-flow-row place-content-center place-items-center shadow-md bg-gray-100 border-cyan-700 mb-10 w-[50%] h-full'
- onClick={showModal}>Add New Account<PlusOutlined/></Button>
+        <Button
+          className="grid grid-flow-row place-content-center place-items-center shadow-md bg-gray-100 border-cyan-700 mb-10 w-[50%] h-full"
+          onClick={showModal}
+        >
+          Add New Account <PlusOutlined />
+        </Button>
       </div>
 
       {/* Render table based on the active account */}
-      <Table className="px-24 py-6"dataSource={[activeAccount]} columns={columns} />
+      <Table className="px-24 py-6" dataSource={[activeAccount]} columns={columns} />
 
       {/* Modal for adding a new account */}
       <Modal
-  title="Add New Account"
-  open={isModalVisible} // changed from visible to open
-  onCancel={handleCancel}
-  footer={null}
+        title="Add New Account"
+        open={isModalVisible} // changed from visible to open
+        onCancel={handleCancel}
+        footer={null}
       >
         <Form onFinish={onFinish}>
           <Form.Item name="name" label="Name" rules={[{ required: true }]}>
