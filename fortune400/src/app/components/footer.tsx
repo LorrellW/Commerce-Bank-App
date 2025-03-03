@@ -51,7 +51,7 @@ export default function Footer({ companyName = "Fortune400", rightsReserverd = "
             <MailOutlined className='pb-6' />
             </div>
             <div className='flex'>
-              <Input className='flex flex-row px-2'></Input>
+              <Input className='flex flex-row px-2'placeholder='Your Email'></Input>
             </div>
           </div>
         </section>

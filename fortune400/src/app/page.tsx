@@ -3,7 +3,7 @@
 import Image from "next/image";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ArrowRightOutlined,  BankOutlined, BankTwoTone, UsergroupAddOutlined } from "@ant-design/icons";
-
+import ThreeCard from "./components/threeCard";
 import G1 from "@/app/Icons/graphic1.png";
 import G2 from "@/app/Icons/pana.png";
 import G3 from "@/app/Icons/rafiki.png";
@@ -80,32 +80,7 @@ export default function Home() {
           </p>
         </div>
 
-        <section className="flex flex-col p-10 lg:grid lg:grid-cols-3 justify-items-center items-center bg-secondary2">
-
-          <div className="min-w-sm max-w-xs bg-white grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
-            <UsergroupAddOutlined className="text-blue-500 text-4xl" />
-            <div className="text-darkText text-2xl">Membership Organizations</div>
-            <div className="text-lightText">
-              Our membership management software provides full automation of membership renewals and payments
-            </div>
-          </div>
-
-          <div className="min-w-sm max-w-xs bg-white grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
-            <BankTwoTone className="text-4xl text-darkText" />
-            <div className="text-darkText text-2xl">National Associations</div>
-            <div className="text-lightText">
-              Our membership management software provides full automation of membership renewals and payments
-            </div>
-          </div>
-
-          <div className="min-w-sm max-w-xs bg-white grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
-            <BankTwoTone className="text-4xl" />
-            <div className="text-2xl text-darkText">Clubs And Groups</div>
-            <div className="text-lightText">
-              Our membership management software provides full automation of membership renewals and payments
-            </div>
-          </div>
-        </section>
+        <ThreeCard></ThreeCard>
 
         <section>
           <div className="grid lg:grid-cols-2 items-center sm:gap-y-0 justify-items-center min-h-[600px] bg-secondary">
