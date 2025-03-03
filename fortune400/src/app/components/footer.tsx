@@ -1,4 +1,4 @@
-
+//src\app\components\footer.tsx
 import { GithubOutlined, MailOutlined } from '@ant-design/icons'
 import { LinkedinOutlined } from '@ant-design/icons'
 import { DiscordOutlined } from '@ant-design/icons'
