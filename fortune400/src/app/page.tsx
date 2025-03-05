@@ -4,7 +4,6 @@ import Image from "next/image";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ArrowRightOutlined, BankOutlined } from "@ant-design/icons";
 import ThreeCard from "./components/threeCard";
-import G1 from "@/app/Icons/graphic1.png";
 import G2 from "@/app/Icons/pana.png";
 import G3 from "@/app/Icons/rafiki.png";
 import Antsvg from "@/app/Icons/antD.svg";
@@ -17,7 +16,6 @@ import npm from "@/app/Icons/npm.svg";
 import react from "@/app/Icons/react.svg";
 import tailWind from "@/app/Icons/tailWind.svg";
 import ts from "@/app/Icons/ts.svg";
-import bgPic from "@/app/Icons/winter-pic.webp"
 import bgPic2 from "@/app/Icons/building-tall.jpg"
 
 export default function Home() {

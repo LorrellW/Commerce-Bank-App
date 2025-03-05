@@ -1,8 +1,6 @@
 "use client";
-import bgPic from "@/app/Icons/winter-pic.webp";
-import bgPic2 from"@/app/Icons/trees-road.jpg";
+
 import { UsergroupAddOutlined, BankTwoTone } from "@ant-design/icons";
-import Image from "next/image";
 
 const ThreeCard = ()=>{
     return(
