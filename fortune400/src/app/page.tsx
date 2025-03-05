@@ -16,7 +16,6 @@ import npm from "@/app/Icons/npm.svg";
 import react from "@/app/Icons/react.svg";
 import tailWind from "@/app/Icons/tailWind.svg";
 import ts from "@/app/Icons/ts.svg";
-import bgPic2 from "@/app/Icons/building-tall.jpg"
 import bgPic3 from "@/app/Icons/building-pic.jpg"
 
 export default function Home() {
