@@ -17,6 +17,7 @@ import react from "@/app/Icons/react.svg";
 import tailWind from "@/app/Icons/tailWind.svg";
 import ts from "@/app/Icons/ts.svg";
 import bgPic2 from "@/app/Icons/building-tall.jpg"
+import bgPic3 from "@/app/Icons/building-pic.jpg"
 
 export default function Home() {
   return (
@@ -25,33 +26,31 @@ export default function Home() {
 
 
 
-        <section>
+      <section className="relative min-w-screen ">
+  {/* Full background image */}
+  <Image
+    src={bgPic3}
+    alt="Background"
+    layout="fill"
+    objectFit="cover"
+    className="absolute inset-0 z-0"
+    priority
+  />
 
-          <div className="grid lg:grid-cols-2 justify-items-center min-h-[600px] bg-secondary2">
-            <div className="flex-row">
-
-              <p className="pt-60 lg:text-6xl text-4xl text-gray-600">Modern Banking</p>
-              <p className="lg:text-6xl text-4xl text-primary">Built for you.</p>
-              <p className="lg:text-md py-4 text-gray-600">
-                Where to monitor all your financial needs.
-              </p>
-              <button className="bg-primary mt-4 text-sm rounded w-[30%] max-h-10 h-[30%]">
-                Register
-              </button>
-            </div>
-            <div className="hidden lg:block">
-              <Image
-                className="flex-auto"
-                src={bgPic2}
-                alt="Fortune400 Logo"
-                width={800}
-                height={800}
-                objectFit="cover"
-                priority
-              />
-            </div>
-          </div>
-        </section>
+  {/* Content overlay */}
+  <div className="relative grid lg:grid-cols-2 justify-items-center min-h-[600px]">
+    <div className=" flex flex-col">
+      <p className="mt-28 lg:text-6xl text-5xl text-slate-50">Modern Banking</p>
+      <p className="lg:text-6xl text-5xl text-cyan-300">Built for <span className="text-orange-300">you.</span></p>
+      <p className="lg:text-md mt-8 text-sky-100">
+        Where to monitor all your financial needs.
+      </p>
+      <button className="bg-primary mt-4 text-sm rounded w-[30%] max-h-10 h-[30%]">
+        Register
+      </button>
+    </div>
+  </div>
+</section>
       </div>
       <section className="min-h-[600px] bg-white">
         <div className="flex flex-col space-y-8 py-6">
@@ -196,7 +195,7 @@ export default function Home() {
             <div className="text-lightText">
               Creating Streamlined Safeguarding Processes with OneRen
             </div>
-            <p className="pt-6 text-primary">read More <ArrowRightOutlined /> </p>
+            <p className="pt-6 text-primary">Read More <ArrowRightOutlined /> </p>
           </div>
 
           <div className="min-w-sm max-w-xs bg-secondary2 grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
@@ -204,7 +203,7 @@ export default function Home() {
             <div className="text-lightText">
               What are your safeguarding responsibilities and how can you manage them?
             </div>
-            <p className="pt-6 text-primary">read More <ArrowRightOutlined /> </p>
+            <p className="pt-6 text-primary">Read More <ArrowRightOutlined /> </p>
           </div>
 
           <div className="min-w-sm max-w-xs bg-secondary2 grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
@@ -212,7 +211,7 @@ export default function Home() {
             <div className="text-lightText">
               Revamping the Membership Model with Triathlon Australia
             </div>
-            <p className="pt-6 text-primary">read More <ArrowRightOutlined /> </p>
+            <p className="pt-6 text-primary">Read More <ArrowRightOutlined /> </p>
           </div>
         </section>
 
