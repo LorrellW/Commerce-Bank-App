@@ -2,9 +2,8 @@
 
 import Image from "next/image";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { ArrowRightOutlined,  BankOutlined, BankTwoTone, UsergroupAddOutlined } from "@ant-design/icons";
-
-import G1 from "@/app/Icons/graphic1.png";
+import { ArrowRightOutlined, BankOutlined } from "@ant-design/icons";
+import ThreeCard from "./components/threeCard";
 import G2 from "@/app/Icons/pana.png";
 import G3 from "@/app/Icons/rafiki.png";
 import Antsvg from "@/app/Icons/antD.svg";
@@ -17,37 +16,47 @@ import npm from "@/app/Icons/npm.svg";
 import react from "@/app/Icons/react.svg";
 import tailWind from "@/app/Icons/tailWind.svg";
 import ts from "@/app/Icons/ts.svg";
+import bgPic2 from "@/app/Icons/building-tall.jpg"
 
 export default function Home() {
   return (
     <>
-      <section>
-        <div className="grid lg:grid-cols-2 items-center justify-items-center min-h-[600px] bg-secondary2">
-          <div className="flex-row">
-            <p className="lg:text-5xl text-4xl text-gray-600">Modern Banking</p>
-            <p className="lg:text-5xl text-4xl text-primary">Built for you.</p>
-            <p className="lg:text-sm py-4 text-gray-600">
-              Where to monitor all your financial needs.
-            </p>
-            <button className="bg-primary mt-6 py-2 text-sm rounded w-[30%] h-[30%]">
-              Register
-            </button>
-          </div>
-          <div className="hidden sm:block">
-            <Image
-              className="cartoon-graphic-1"
-              src={G1}
-              alt="Fortune400 Logo"
-              width={500}
-              height={500}
-              priority
-            />
-          </div>
-        </div>
-      </section>
+      <div>
 
+
+
+        <section>
+
+          <div className="grid lg:grid-cols-2 justify-items-center min-h-[600px] bg-secondary2">
+            <div className="flex-row">
+
+              <p className="pt-60 lg:text-6xl text-4xl text-gray-600">Modern Banking</p>
+              <p className="lg:text-6xl text-4xl text-primary">Built for you.</p>
+              <p className="lg:text-md py-4 text-gray-600">
+                Where to monitor all your financial needs.
+              </p>
+              <button className="bg-primary mt-4 text-sm rounded w-[30%] max-h-10 h-[30%]">
+                Register
+              </button>
+            </div>
+            <div className="hidden lg:block">
+              <Image
+                className="flex-auto"
+                src={bgPic2}
+                alt="Fortune400 Logo"
+                width={800}
+                height={800}
+                objectFit="cover"
+                priority
+              />
+            </div>
+          </div>
+        </section>
+      </div>
       <section className="min-h-[600px] bg-white">
         <div className="flex flex-col space-y-8 py-6">
+
+
           <p className="text-darkText text-center font-bold text-3xl">
             Our Tech
           </p>
@@ -80,32 +89,7 @@ export default function Home() {
           </p>
         </div>
 
-        <section className="flex flex-col p-10 lg:grid lg:grid-cols-3 justify-items-center items-center bg-secondary2">
-
-          <div className="min-w-sm max-w-xs bg-white grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
-            <UsergroupAddOutlined className="text-blue-500 text-4xl" />
-            <div className="text-darkText text-2xl">Membership Organizations</div>
-            <div className="text-lightText">
-              Our membership management software provides full automation of membership renewals and payments
-            </div>
-          </div>
-
-          <div className="min-w-sm max-w-xs bg-white grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
-            <BankTwoTone className="text-4xl text-darkText" />
-            <div className="text-darkText text-2xl">National Associations</div>
-            <div className="text-lightText">
-              Our membership management software provides full automation of membership renewals and payments
-            </div>
-          </div>
-
-          <div className="min-w-sm max-w-xs bg-white grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
-            <BankTwoTone className="text-4xl" />
-            <div className="text-2xl text-darkText">Clubs And Groups</div>
-            <div className="text-lightText">
-              Our membership management software provides full automation of membership renewals and payments
-            </div>
-          </div>
-        </section>
+        <ThreeCard></ThreeCard>
 
         <section>
           <div className="grid lg:grid-cols-2 items-center sm:gap-y-0 justify-items-center min-h-[600px] bg-secondary">
