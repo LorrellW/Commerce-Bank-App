@@ -16,6 +16,7 @@ export default {
         secondary2: "#83B9FF",
         darkText: "#4D4D4D",
         lightText:"#717171",
+        grayForm: "#f5f4f1",
         
 
       },
