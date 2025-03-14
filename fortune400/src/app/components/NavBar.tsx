@@ -10,8 +10,6 @@ import { Button } from "antd";
 
 
 
-
-
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const handleClick = () => {
@@ -43,11 +41,11 @@ const Navbar: React.FC = () => {
             Account
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500  transition-all duration-300 group-hover:w-full"></span>
           </Link>
-          <Link href="/pages/taxes" className="relative group text-black hover:text-orange-700">
+          <Link href="/pages/dashboard" className="relative group text-black hover:text-orange-700">
             Dashboard
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500  transition-all duration-300 group-hover:w-full"></span>
           </Link>
-          <Link href="/pages/Services" className="relative group text-black hover:text-orange-700">
+          <Link href="/pages/services" className="relative group text-black hover:text-orange-700">
             Services
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500  transition-all duration-300 group-hover:w-full"></span>
           </Link>
@@ -96,11 +94,11 @@ const Navbar: React.FC = () => {
             Account
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500  transition-all duration-300 group-hover:w-full"></span>
           </Link>
-          <Link href="/pages/taxes" className="relative group text-black hover:text-orange-700" onClick={()=>setIsOpen(false)}>
+          <Link href="/pages/dashboard" className="relative group text-black hover:text-orange-700" onClick={()=>setIsOpen(false)}>
             Dashboard
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500  transition-all duration-300 group-hover:w-full"></span>
           </Link>
-          <Link href="/pages/Services" className="relative group text-black hover:text-orange-700" onClick={()=>setIsOpen(false)}>
+          <Link href="/pages/services" className="relative group text-black hover:text-orange-700" onClick={()=>setIsOpen(false)}>
             Services
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500  transition-all duration-300 group-hover:w-full"></span>
           </Link>
