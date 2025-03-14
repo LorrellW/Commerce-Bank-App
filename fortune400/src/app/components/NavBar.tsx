@@ -7,14 +7,41 @@ import Logo from "@/app/Icons/F4-logo.png";
 import { useState } from "react";
 import { MenuOutlined } from "@ant-design/icons";
 import { Button } from "antd";
-
+import LoginComponent from "@/app/components/LoginModal";
+import SignUpModal from "@/app/components/SignUpModal"
 
 
 const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false)
+  // useState for generic open and close
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // useState for Login Modal
+  const [isLoginOpen, setLoginOpen] = useState(false);
+
+  const [isSignUpOpen, setSignUpOpen] = useState(false);
+
+
   const handleClick = () => {
     setIsOpen((prev => !prev))
   };
+
+  
+  const handleLoginOpen = () =>{
+    setLoginOpen(true);
+  };
+  const handleLoginClose = () =>{
+    setLoginOpen(false);
+  }
+
+  const handleSignUpOpen = () => {
+    setSignUpOpen(true);
+    console.log("Signup Clicked");
+  };
+
+  const handleSignUpClose = () =>{
+    setSignUpOpen(false);
+  }
+
   return (
     <nav className="navbar top grid grid-cols-3 items-center px-8 py-4 bg-white">
 
@@ -59,12 +86,30 @@ const Navbar: React.FC = () => {
       {/* Right Section - Login & Signup Buttons  */}
       <div className="lg:grid hidden ">
         <div className="flex justify-end space-x-4">
-          <button className="bg-secondary shadow-sm rounded-md text-sm text-primary px-4 py-2">
+          <button 
+          onClick={handleLoginOpen}
+          className="bg-secondary shadow-sm rounded-md text-sm text-primary px-4 py-2"
+          >
             Login
           </button>
-          <button className="bg-primary shadow-sm text-white text-sm rounded-md px-4 py-2">
+          <div className="inset-0">
+          {isLoginOpen && 
+          <LoginComponent open={isLoginOpen} 
+                          onClose={handleLoginClose}
+                            />}
+          </div>
+
+          <button
+          onClick={handleSignUpOpen} 
+          className="bg-primary shadow-sm text-white text-sm rounded-md px-4 py-2">
             Signup
           </button>
+          <div className="inset-0">
+          {isSignUpOpen && 
+          <SignUpModal open={isSignUpOpen} 
+                          onClose={handleSignUpClose}
+                            />}
+          </div>
         </div>
       </div>
 
@@ -74,7 +119,7 @@ const Navbar: React.FC = () => {
         </button>
       </div>
 
-      {/* Conditionally Rendered Mobile Menu */}
+      {/* Conditionally Rendered Hamburger Menu */}
       {isOpen && (
         <section className="fixed inset-0 z-50 w-screen">
 
