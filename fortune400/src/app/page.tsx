@@ -17,14 +17,25 @@ import react from "@/app/Icons/react.svg";
 import tailWind from "@/app/Icons/tailWind.svg";
 import ts from "@/app/Icons/ts.svg";
 import bgPic3 from "@/app/Icons/building-pic.jpg"
+import { useState } from "react";
+import SignUpModal from "./components/SignUpModal";
+
 
 export default function Home() {
+
+  const [isRegisterOpen,setRegisterOpen] = useState(false);
+
+  const handleSignUpOpen = () =>{
+    setRegisterOpen(true);
+  };
+
+  const handleSignUpClose = () =>{
+    setRegisterOpen(false);
+  };
+
   return (
     <>
       <div>
-
-
-
       <section className="relative min-w-screen ">
   {/* Full background image */}
   <Image
@@ -44,9 +55,14 @@ export default function Home() {
       <p className="lg:text-md mt-8 text-sky-100">
         Where to monitor all your financial needs.
       </p>
-      <button className="bg-primary mt-4 text-sm rounded w-[30%] max-h-10 h-[30%]">
+      <button 
+      onClick={handleSignUpOpen}
+      className="bg-primary mt-4 text-sm rounded w-[30%] max-h-10 h-[30%]">
         Register
       </button>
+      {isRegisterOpen && <SignUpModal open={true} 
+                                    onClose={handleSignUpClose }>
+    </SignUpModal>}
     </div>
   </div>
 </section>
