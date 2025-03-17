@@ -16,22 +16,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Fortune400
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
-const defaultTheme = createTheme();
 
 interface SignInModalProps {
   open: boolean;
@@ -111,7 +97,6 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
           <Button onClick={onClose}>Close</Button>
         </DialogActions>
         <Box sx={{ mt: 2 }}>
-          <Copyright />
         </Box>
       </Dialog>
   );

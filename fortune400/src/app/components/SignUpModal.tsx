@@ -5,8 +5,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -16,28 +14,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 //import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Grid2 } from '@mui/material';
 
-const defaultTheme = createTheme();
 
 interface SignUpModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-function Copyright(props: any) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Fortune400
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -126,7 +109,6 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
           <Button onClick={onClose}>Close</Button>
         </DialogActions>
         <Box sx={{ mb: 2 }}>
-          <Copyright sx={{ mt: 2 }} />
         </Box>
       </Dialog>
   );
