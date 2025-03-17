@@ -9,8 +9,9 @@ export default function SettingsPage() {
   return (
     <div>
       <RegisterComponent/>  
-      <LoginComponent open={false} onClose={function (): void {
-        throw new Error('Function not implemented.');
+      <LoginComponent open={false} 
+                      onClose={function (): void {
+                      throw new Error('Function not implemented.');
       } }/>    
     </div>
   );

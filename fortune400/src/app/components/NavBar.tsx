@@ -35,7 +35,6 @@ const Navbar: React.FC = () => {
 
   const handleSignUpOpen = () => {
     setSignUpOpen(true);
-    console.log("Signup Clicked");
   };
 
   const handleSignUpClose = () =>{
