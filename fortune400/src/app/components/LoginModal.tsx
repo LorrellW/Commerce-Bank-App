@@ -19,6 +19,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 
 import { signIn } from "@/../Firbase/firebaseAuthService"; // Import the signIn function
+import { error } from '@material-tailwind/react/types/components/input';
 
 interface SignInModalProps {
   open: boolean;
