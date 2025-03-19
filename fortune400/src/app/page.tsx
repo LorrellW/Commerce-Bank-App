@@ -19,6 +19,10 @@ import ts from "@/app/Icons/ts.svg";
 import bgPic3 from "@/app/Icons/building-pic.jpg"
 import { useState } from "react";
 import SignUpModal from "./components/SignUpModal";
+import BirdsViewPic from "@/app/Icons/streetBirdsView.jpg";
+import OfficePic from "@/app/Icons/officePic.jpg"
+import MoneyTrees from "@/app/Icons/money-trees.jpg"
+import MoneyPic from "@/app/Icons/moneyPic.jpg";
 
 
 export default function Home() {
@@ -109,11 +113,9 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 items-center sm:gap-y-0 justify-items-center min-h-[600px] bg-secondary">
             <div className="hidden sm:block">
               <Image
-                src={G3}
+                src={MoneyTrees}
                 alt="graphic 3"
-                width={500}
-                height={500}
-                priority
+                className="object-cover h-[600px]"
               />
             </div>
             <div className="min-w-sm max-w-xl grid grid-rows-3 justify-items-center rounded-lg">
@@ -174,14 +176,13 @@ export default function Home() {
 
         <section>
           <div className="grid lg:grid-cols-2 items-center justify-items-center min-h-[600px] bg-secondary">
+
             <div className="hidden sm:block">
               <Image
-                className="cartoon-graphic-1"
-                src={G2}
+                className="object-cover h-[600px]"
+                src={MoneyPic}
                 alt="Fortune400 Logo"
-                width={500}
-                height={500}
-                priority
+                
               />
             </div>
             <div className="min-w-sm max-w-xl grid grid-rows-3 justify-items-center rounded-lg">
