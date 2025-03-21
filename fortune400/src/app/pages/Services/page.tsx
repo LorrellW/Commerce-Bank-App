@@ -1,13 +1,10 @@
-
 import ThreeCard from "@/app/components/threeCard";
 
-
-export default function ServicesPage(){
-    return(
+export default function ServicesPage() {
+    return (
         <div>
-          <ThreeCard/>
-          <ThreeCard></ThreeCard>
+          <ThreeCard />
+          <ThreeCard />
         </div>
-    
     );
-    }
+}
