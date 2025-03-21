@@ -4,8 +4,8 @@ import Image from "next/image";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ArrowRightOutlined, BankOutlined } from "@ant-design/icons";
 import ThreeCard from "./components/threeCard";
-import G2 from "@/app/Icons/pana.png";
-import G3 from "@/app/Icons/rafiki.png";
+// import G2 from "@/app/Icons/pana.png";
+// import G3 from "@/app/Icons/rafiki.png";
 import Antsvg from "@/app/Icons/antD.svg";
 import figma from "@/app/Icons/figma.svg";
 import java from "@/app/Icons/java.svg";
@@ -19,10 +19,11 @@ import ts from "@/app/Icons/ts.svg";
 import bgPic3 from "@/app/Icons/building-pic.jpg"
 import { useState } from "react";
 import SignUpModal from "./components/SignUpModal";
-import BirdsViewPic from "@/app/Icons/streetBirdsView.jpg";
-import OfficePic from "@/app/Icons/officePic.jpg"
+// import BirdsViewPic from "@/app/Icons/streetBirdsView.jpg";
+// import OfficePic from "@/app/Icons/officePic.jpg"
 import MoneyTrees from "@/app/Icons/money-trees.jpg"
 import MoneyPic from "@/app/Icons/moneyPic.jpg";
+// import { Streetview } from "@mui/icons-material";
 
 
 export default function Home() {
@@ -40,33 +41,36 @@ export default function Home() {
   return (
     <>
       <div>
-      <section className="relative min-w-screen ">
-  {/* Full background image */}
-  <Image
-    src={bgPic3}
-    alt="Background"
-    layout="fill"
-    objectFit="cover"
-    className="absolute inset-0 z-0"
-    priority
-  />
+      <section className="relative w-full">
+  <div className="relative h-[600px] w-full">
+    <Image
+      src={bgPic3}
+      alt="Background"
+      fill
+      className="object-cover"
+      priority
+    />
+  </div>
 
   {/* Content overlay */}
-  <div className="relative grid lg:grid-cols-2 justify-items-center min-h-[600px]">
-    <div className=" flex flex-col">
+  <div className="absolute inset-0 grid lg:grid-cols-2 justify-items-center min-h-[600px]">
+    <div className="flex flex-col">
       <p className="mt-28 lg:text-6xl text-5xl text-slate-50">Modern Banking</p>
-      <p className="lg:text-6xl text-5xl text-cyan-300">Built for <span className="text-orange-300">you.</span></p>
+      <p className="lg:text-6xl text-5xl text-cyan-300">
+        Built for <span className="text-orange-300">you.</span>
+      </p>
       <p className="lg:text-md mt-8 text-sky-100">
         Where to monitor all your financial needs.
       </p>
       <button 
-      onClick={handleSignUpOpen}
-      className="bg-primary mt-4 text-sm rounded w-[30%] max-h-10 h-[30%]">
+        onClick={handleSignUpOpen}
+        className="bg-primary mt-4 text-sm rounded w-[30%] max-h-10 h-[30%]"
+      >
         Register
       </button>
-      {isRegisterOpen && <SignUpModal open={true} 
-                                    onClose={handleSignUpClose }>
-    </SignUpModal>}
+      {isRegisterOpen && (
+        <SignUpModal open={true} onClose={handleSignUpClose} />
+      )}
     </div>
   </div>
 </section>

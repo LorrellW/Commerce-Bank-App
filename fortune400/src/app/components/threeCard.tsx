@@ -1,3 +1,5 @@
+"use client";
+
 import { UsergroupAddOutlined, BankTwoTone } from "@ant-design/icons";
 import Image from "next/image";
 import StreetPic from "@/app/Icons/streetBirdsView.jpg";
@@ -9,7 +11,6 @@ const ThreeCard = () => {
       <Image
         src={StreetPic}
         alt="Background"
-        layout="fill"
         objectFit="cover"
         className="absolute inset-0 z-0"
         priority

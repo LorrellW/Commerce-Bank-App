@@ -1,25 +1,8 @@
-// LoginModal.tsx
 "use client";
 
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-
-import { signIn } from "@/../Firbase/firebaseAuthService"; // Import the signIn function
-import { error } from '@material-tailwind/react/types/components/input';
+import { useState, FormEvent } from "react";
+import { signIn } from "@/../Firbase/firebaseAuthService";
+import { LockOutlined } from "@ant-design/icons"; // Optional replacement for Lock icon
 
 interface SignInModalProps {
   open: boolean;
@@ -27,91 +10,111 @@ interface SignInModalProps {
 }
 
 const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
+
     const data = new FormData(event.currentTarget);
-    const email = data.get('email') as string;
-    const password = data.get('password') as string;
+    const email = data.get("email") as string;
+    const password = data.get("password") as string;
 
     try {
       const user = await signIn(email, password);
       console.log("User signed in successfully:", user.displayName);
-      onClose(); // Close the modal on successful sign-in
-    } catch (err: any) {
+      onClose(); // Close the modal on success
+    } catch (err: unknown) {
       console.error("Error signing in:", err);
-      setError(err.message || "An error occurred during sign in.");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An error occurred during sign in.");
+      }
     }
   };
 
+  if (!open) return null;
+
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth>
-      <CssBaseline />
-      <DialogTitle sx={{ textAlign: 'center' }}>
-        <Avatar sx={{ m: 'auto', bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-      </DialogTitle>
-      <DialogContent>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
-          {error && (
-            <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-              {error}
-            </Typography>
-          )}
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-blue-100 rounded-lg shadow-lg w-full max-w-sm p-7 relative">
+        <div className="flex flex-col items-center">
+          <div className="py-2 text-3xl rounded-full text-blue-700">
+            <LockOutlined className="" />
+          </div>
+          <h2 className="text-3xl text-slate-500 font-normal mb-4">Login</h2>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-black">
+              Email Address
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              className="mt-1 w-full rounded-md border border-gray-300 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              autoComplete="current-password"
+              className="mt-1 w-full rounded-md border border-gray-300 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
+          </div>
+
+          <div className="flex items-center">
+            <input
+              id="remember"
+              name="remember"
+              type="checkbox"
+              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+            />
+            <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
+              Remember me
+            </label>
+          </div>
+
+          {error && <p className="text-red-600 text-sm">{error}</p>}
+
+          <button
+            type="submit"
+            className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary-dark transition"
+          >
             Login
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Close</Button>
-      </DialogActions>
-      <Box sx={{ mt: 2 }} />
-    </Dialog>
+          </button>
+        </form>
+
+        <div className="flex justify-between mt-4 text-sm">
+          <a href="#" className="text-primary hover:underline">
+            Forgot password?
+          </a>
+          <a href="#" className="text-primary hover:underline ">
+            Don’t have an account? Sign Up
+          </a>
+        </div>
+
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-700 hover:text-gray-700 text-md"
+        >
+          ✕
+        </button>
+      </div>
+    </div>
   );
 };
 
 export default SignInModal;
-``
