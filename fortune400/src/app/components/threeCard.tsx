@@ -1,20 +1,19 @@
 "use client";
 
 import { UsergroupAddOutlined, BankTwoTone } from "@ant-design/icons";
-import Image from "next/image";
-import StreetPic from "@/app/Icons/streetBirdsView.jpg";
+// import Image from "next/image";
+// import StreetPic from "@/app/Icons/streetBirdsView.jpg";
 
 const ThreeCard = () => {
   return (
-    <section className="relative min-h-max">
+    <section className="relative max-h-[600px]">
       {/* Background image */}
-      <Image
+      {/* <Image
         src={StreetPic}
         alt="Background"
-        objectFit="cover"
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 object-contain"
         priority
-      />
+      /> */}
       {/* Content container for cards */}
       <div className="relative z-10 p-12 flex flex-col lg:grid lg:grid-cols-3 justify-items-center items-center">
         <div className="shadow-md min-w-sm max-w-xs bg-white grid grid-rows-3 p-4 py-6 text-center justify-items-center rounded-lg border-blue-300 border-4">
