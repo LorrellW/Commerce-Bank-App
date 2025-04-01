@@ -83,7 +83,7 @@ export default function Home() {
             Our Tech
           </p>
           <p className="text-lightText text-center">
-            Reliable Banking backed by a robust, and community supported tech stack
+            Reliable Banking backed by a robust, community supported tech stack
           </p>
         </div>
 
@@ -123,10 +123,11 @@ export default function Home() {
               />
             </div>
             <div className="min-w-sm max-w-xl grid grid-rows-3 justify-items-center rounded-lg">
-              <p className="lg:text-5xl text-4xl text-darkText">The unseen of spending <br />three years at Pixelgrade</p>
-              <p className="lg:text-md text-lg text-lightText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet justo ipsum. Sed accumsan quam vitae est varius fringilla.
-                Pellentesque placerat vestibulum lorem sed porta. Nullam mattis tristique iaculis. Nullam pulvinar sit amet risus pretium auctor. Etiam quis massa pulvinar, aliquam quam vitae,
-                tempus sem. Donec elementum pulvinar odio.</p>
+              <p className="lg:text-5xl text-4xl text-darkText">Flourish along with your finances <br/></p>
+              <p className="lg:text-md text-lg text-lightText"> Our product makes banking accessible and streamlined to provide you with the best experience.
+                With reliable banking and reporting at your fingertips, you're allowed to customize your budgeting software however you'd like, making banking
+                less of a hassle and personal to you. 
+              </p>
               <button className="bg-primary mt-6 py-2 text-sm rounded w-[30%] h-[30%]">
                 Learn More
               </button>
@@ -148,7 +149,7 @@ export default function Home() {
               <div><BankOutlined className="flex text-4xl text-darkText" /></div>
               <div className="flex-row">
                 <p className="text-darkText">2,245,341</p>
-                <p className="text-darkText">Memebers</p>
+                <p className="text-darkText text-xl">Members</p>
 
               </div>
             </div>
@@ -190,11 +191,11 @@ export default function Home() {
               />
             </div>
             <div className="min-w-sm max-w-xl grid grid-rows-3 justify-items-center rounded-lg">
-              <p className="lg:text-5xl text-4xl text-darkText">See what we can do for you this tax season</p>
-              <p className="lg:text-md text-lg text-lightText">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet justo ipsum. Sed accumsan quam vitae est varius fringilla.
-                Pellentesque placerat vestibulum lorem sed porta. Nullam mattis tristique iaculis. Nullam pulvinar sit amet risus pretium auctor. Etiam quis massa pulvinar, aliquam quam vitae,
-                tempus sem. Donec elementum pulvinar odio.</p>
-              <button className="bg-primary mt-6 py-2 text-sm rounded w-[30%] h-[30%]">
+              <p className="lg:text-5xl text-4xl text-darkText">See what we can do for you this tax season & beyond!<br/></p>
+              <p className="lg:text-md text-lg text-lightText"> <br/> Fortune400 provides an easy way to categorize your spending, whether you want to be hands-on or off with each transaction. 
+                Our models will correctly total each expense or deposit to give you an accurate finance report you can trust.
+                <br/> </p>
+              <button className="bg-primary mt-6 py-2 text-sm rounded w-[30%] h-[30%]"> 
                 Learn More
               </button>
             </div>
@@ -202,34 +203,34 @@ export default function Home() {
           </div>
         </section>
         <p className="mt-6 text-darkText text-center font-bold text-3xl">
-          Banking with A.i
+          Banking with AI
         </p>
         <p className="mt-6 text-lightText text-center">
-          The Nexcent blog is the best place to read about the latest membership insights, trends and more. See whos joining the community, read about how our community are increasing their membership income and a lot more.
+           The future of banking is here, in a big way.
         </p>
 
         <section className=" flex flex-col p-10 lg:grid lg:grid-cols-3 justify-items-center items-center">
 
           <div className="min-w-sm max-w-xs bg-secondary2 grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
-            <div className="text-darkText text-2xl">Membership Organizations</div>
+            <div className="text-darkText text-2xl"> Benefits </div>
             <div className="text-lightText">
-              Creating Streamlined Safeguarding Processes with OneRen
+              Why Fortune400 is a perfect fit for you and your lifestyle
             </div>
             <p className="pt-6 text-primary">Read More <ArrowRightOutlined /> </p>
           </div>
 
           <div className="min-w-sm max-w-xs bg-secondary2 grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
-            <div className="text-darkText text-2xl">National Associations</div>
+            <div className="text-darkText text-2xl"> Privacy </div>
             <div className="text-lightText">
-              What are your safeguarding responsibilities and how can you manage them?
+              Learn how your information is kept safe with our commitment to security
             </div>
             <p className="pt-6 text-primary">Read More <ArrowRightOutlined /> </p>
           </div>
 
           <div className="min-w-sm max-w-xs bg-secondary2 grid grid-rows-3 py-4 text-center justify-items-center rounded-lg">
-            <div className="text-2xl text-darkText">Clubs And Groups</div>
+            <div className="text-2xl text-darkText"> Innovation </div>
             <div className="text-lightText">
-              Revamping the Membership Model with Triathlon Australia
+              See how our tech is changing the game and will bring you with us
             </div>
             <p className="pt-6 text-primary">Read More <ArrowRightOutlined /> </p>
           </div>
