@@ -125,7 +125,7 @@ export default function Home() {
             <div className="min-w-sm max-w-xl grid grid-rows-3 justify-items-center rounded-lg">
               <p className="lg:text-5xl text-4xl text-darkText">Flourish along with your finances <br/></p>
               <p className="lg:text-md text-lg text-lightText"> Our product makes banking accessible and streamlined to provide you with the best experience.
-                With reliable banking and reporting at your fingertips, you're allowed to customize your budgeting software however you'd like, making banking
+                With reliable banking and reporting at your fingertips, you&apos;re allowed to customize your budgeting software however you&apos;d like, making banking
                 less of a hassle and personal to you. 
               </p>
               <button className="bg-primary mt-6 py-2 text-sm rounded w-[30%] h-[30%]">
