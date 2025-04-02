@@ -4,6 +4,8 @@ import "./globals.css";
 import NavBar from "@/app/components/NavBar";
 import Footer from "./components/footer";
 import Header from "./components/header";
+import { UserProvider } from "./context/UserContext";
+
 
 export const metadata: Metadata = {
   title: "fortune 400",
@@ -13,13 +15,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen">
-        <Header />
-      <NavBar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-      </body>
-      
+        <body className="min-h-screen">
+          <UserProvider>
+          <Header />
+          <NavBar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+          </UserProvider>
+        </body>
+
     </html>
   );
 }

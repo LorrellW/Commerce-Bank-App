@@ -50,6 +50,8 @@ export const signIn = async (
  */
 export const signOutUser = async (): Promise<void> => {
   await signOut(auth);
+  localStorage.removeItem("user"); // Clear local user data
+
 };
 
 /**

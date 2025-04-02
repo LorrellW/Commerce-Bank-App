@@ -2,13 +2,14 @@
 
 import { useState, FormEvent } from "react";
 import { signUp } from "../../../Firbase/firebaseAuthService";
-
+import {useUser} from "@/app/context/UserContext"
 interface SignUpModalProps {
   open: boolean;
   onClose: () => void;
 }
 
 const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
+  const { setUser } = useUser();
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -23,6 +24,7 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
 
     try {
       const user = await signUp(email, password, `${firstName} ${lastName}`);
+      setUser({ firstName, lastName, email });
       console.log("User signed up successfully:", user);
       onClose();
     } catch (err: unknown) {

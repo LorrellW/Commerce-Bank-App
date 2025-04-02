@@ -1,12 +1,15 @@
 
 
-import { CameraOutlined, UserAddOutlined, DownOutlined } from '@ant-design/icons'
+import { CameraEnhanceOutlined } from '@mui/icons-material';
+import { SupervisedUserCircleOutlined } from '@mui/icons-material';
+import { ArrowDownwardOutlined } from '@mui/icons-material';
 
 
 
-export default function Example() {
+
+export default function RegisterComponent() {
   return (
-    <div className=' w-full pb-6 '>
+    <div className=' w-full pt-8 pb-6 '>
     <form className=' place-items-center '>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
@@ -16,7 +19,7 @@ export default function Example() {
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="sm:col-span-4">
+            {/* <div className="sm:col-span-4">
               <label htmlFor="username" className="block text-sm/6 font-medium text-gray-900">
                 Username
               </label>
@@ -32,7 +35,7 @@ export default function Example() {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="col-span-full">
               <label htmlFor="about" className="block text-sm/6 font-medium text-gray-900">
@@ -56,7 +59,7 @@ export default function Example() {
                 Photo
               </label>
               <div className="mt-2 flex text-2xl items-center gap-x-3">
-                <UserAddOutlined aria-hidden="true" className="size-12 text-gray-300" />
+                <SupervisedUserCircleOutlined aria-hidden="true" className="size-12 text-gray-300" />
                 <button
                   type="button"
                   className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 ring-1 shadow-xs ring-gray-300 ring-inset hover:bg-gray-50"
@@ -72,7 +75,7 @@ export default function Example() {
               </label>
               <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
                 <div className="text-center">
-                  <CameraOutlined aria-hidden="true" className="mx-auto size-12 text-gray-300" />
+                  <CameraEnhanceOutlined aria-hidden="true" className="mx-auto size-12 text-gray-300" />
                   <div className="mt-4 flex text-sm/6 text-gray-600">
                     <label
                       htmlFor="file-upload"
@@ -155,7 +158,7 @@ export default function Example() {
                   <option>Canada</option>
                   <option>Mexico</option>
                 </select>
-                <DownOutlined
+                <ArrowDownwardOutlined
                   aria-hidden="true"
                   className="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
                 />

@@ -9,8 +9,9 @@ import { MenuOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import LoginComponent from "@/app/components/LoginModal";
 import SignUpModal from "@/app/components/SignUpModal";
-import { getAuth, onAuthStateChanged, signOut, User } from "firebase/auth";
-import app from "@/../Firbase/firebaseConfig"; // Adjust the path as needed
+import SuccessModal from "@/app/components/SuccessModal";
+import { getAuth, onAuthStateChanged, signOut, User as FirebaseUser } from "firebase/auth";
+import app from "@/../Firbase/firebaseConfig";
 
 const auth = getAuth(app);
 
@@ -19,9 +20,11 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isSignUpOpen, setSignUpOpen] = useState(false);
-  
-  // State for the currently authenticated user
-  const [user, setUser] = useState<User | null>(null);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+
+  // Local state for the currently authenticated Firebase user
+  const [user, setUser] = useState<FirebaseUser | null>(null);
 
   // Listen for auth state changes
   useEffect(() => {
@@ -34,7 +37,11 @@ const Navbar: React.FC = () => {
   const handleClick = () => {
     setIsOpen((prev) => !prev);
   };
-
+  
+  // const handleSignInSuccess = (displayName: string) => {
+  //   setSuccessMessage(`${displayName} successfully signed in.`);
+  //   setShowSuccessModal(true);
+  // };
   const handleLoginOpen = () => {
     setLoginOpen(true);
   };
@@ -51,12 +58,22 @@ const Navbar: React.FC = () => {
 
   const handleSignOut = async () => {
     try {
+      // Retrieve the user's name before signing out.
+      let name = "User";
+      if (user && user.displayName) {
+        const nameParts = user.displayName.split(" ");
+        name = nameParts.join(" ");
+      }
       await signOut(auth);
-      console.log(user?.displayName, "Successfully Signed Out")
+      localStorage.removeItem("user");
+      setUser(null);
+      setSuccessMessage(`${name} successfully signed out.`);
+      setShowSuccessModal(true);
     } catch (error) {
-      console.error("Error signing out: ", error);
+      console.error("Error signing out:", error);
     }
   };
+
 
   return (
     <nav className="navbar top grid grid-cols-3 items-center px-8 py-4 bg-white">
@@ -102,7 +119,7 @@ const Navbar: React.FC = () => {
       <div className="lg:grid hidden">
         <div className="flex justify-end space-x-4">
           {user ? (
-            <button 
+            <button
               onClick={handleSignOut}
               className="bg-secondary shadow-sm rounded-md text-sm text-primary px-4 py-2"
             >
@@ -110,7 +127,7 @@ const Navbar: React.FC = () => {
             </button>
           ) : (
             <>
-              <button 
+              <button
                 onClick={handleLoginOpen}
                 className="bg-secondary shadow-sm rounded-md text-sm text-primary px-4 py-2"
               >
@@ -120,7 +137,7 @@ const Navbar: React.FC = () => {
                 <LoginComponent open={isLoginOpen} onClose={handleLoginClose} />
               )}
               <button
-                onClick={handleSignUpOpen} 
+                onClick={handleSignUpOpen}
                 className="bg-primary shadow-sm text-white text-sm rounded-md px-4 py-2"
               >
                 Signup
@@ -140,31 +157,51 @@ const Navbar: React.FC = () => {
         </button>
       </div>
 
-      {/* Conditionally Rendered Hamburger Menu */}
+      {/* Mobile Menu Dropdown */}
       {isOpen && (
         <section className="fixed inset-0 z-50 w-screen">
           <div className="absolute inset-0 bg-black opacity-50" onClick={() => setIsOpen(false)} />
           <div className="relative flex items-center justify-center h-full">
             <div className="grid grid-rows-6 border-black place-items-center gap-y-2 bg-slate-300 p-5 rounded-lg">
-              <Link href="/" className="relative group text-black hover:text-orange-700" onClick={() => setIsOpen(false)}>
+              <Link
+                href="/"
+                onClick={() => setIsOpen(false)}
+                className="relative group text-black hover:text-orange-700"
+              >
                 Home
-                <span className="absolute left-0 -bottom-1 h-1 w-auto bg-orange-300 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute left-0 -top-3 h-1 w-auto bg-orange-300 transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href="/pages/account" className="relative group text-black hover:text-orange-700" onClick={() => setIsOpen(false)}>
+              <Link
+                href="/pages/account"
+                onClick={() => setIsOpen(false)}
+                className="relative group text-black hover:text-orange-700"
+              >
                 Account
                 <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href="/pages/dashboard" className="relative group text-black hover:text-orange-700" onClick={() => setIsOpen(false)}>
+              <Link
+                href="/pages/dashboard"
+                onClick={() => setIsOpen(false)}
+                className="relative group text-black hover:text-orange-700"
+              >
                 Dashboard
                 <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href="/pages/services" className="relative group text-black hover:text-orange-700" onClick={() => setIsOpen(false)}>
+              <Link
+                href="/pages/services"
+                onClick={() => setIsOpen(false)}
+                className="relative group text-black hover:text-orange-700"
+              >
                 Services
                 <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
-              <Link href="/pages/settings" className="relative group text-black hover:text-orange-700" onClick={() => setIsOpen(false)}>
+              <Link
+                href="/pages/settings"
+                onClick={() => setIsOpen(false)}
+                className="relative group text-black hover:text-orange-700"
+              >
                 Settings
-                <span className="absolute left-0 -bottom-1 h-1 w-auto bg-orange-300 transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute left-0 -top-3 h-1 w-auto bg-orange-300 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <div className="flex gap-2">
                 {user ? (
@@ -179,6 +216,14 @@ const Navbar: React.FC = () => {
             </div>
           </div>
         </section>
+      )}
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <SuccessModal
+          message={successMessage}
+          onClose={() => setShowSuccessModal(false)}
+        />
       )}
     </nav>
   );
