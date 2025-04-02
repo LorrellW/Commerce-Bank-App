@@ -11,10 +11,18 @@ interface SignInModalProps {
 
 const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
   const [error, setError] = useState<string | null>(null);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("");
 
+    // This function can be called from your login/signup flows when sign in is successful.
+    const handleSignInSuccess = (displayName: string) => {
+      setSuccessMessage(`${displayName} successfully signed in.`);
+      setShowSuccessModal(true);
+    };
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
+
 
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
@@ -22,6 +30,8 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
 
     try {
       const user = await signIn(email, password);
+      handleSignInSuccess(successMessage);
+      setShowSuccessModal(true);
       console.log("User signed in successfully:", user.displayName);
       onClose(); // Close the modal on success
     } catch (err: unknown) {
