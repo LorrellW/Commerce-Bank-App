@@ -87,7 +87,7 @@ const Navbar: React.FC = () => {
             Dashboard
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
           </Link>
-          <Link href="/pages/services" className="relative group text-black hover:text-orange-700">
+          <Link href="/pages/Services" className="relative group text-black hover:text-orange-700">
             Services
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
           </Link>
