@@ -2,7 +2,8 @@
 
 import { useState, FormEvent } from "react";
 import { signIn } from "@/../Firbase/firebaseAuthService";
-import { LockOutlined } from "@ant-design/icons"; // Optional replacement for Lock icon
+import { LockOutlined } from "@ant-design/icons"; 
+import SuccessModal from "./SuccessModal";
 
 interface SignInModalProps {
   open: boolean;
@@ -11,18 +12,12 @@ interface SignInModalProps {
 
 const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
   const [error, setError] = useState<string | null>(null);
-    const [showSuccessModal, setShowSuccessModal] = useState(false);
-    const [successMessage, setSuccessMessage] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
 
-    // This function can be called from your login/signup flows when sign in is successful.
-    const handleSignInSuccess = (displayName: string) => {
-      setSuccessMessage(`${displayName} successfully signed in.`);
-      setShowSuccessModal(true);
-    };
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
-
 
     const data = new FormData(event.currentTarget);
     const email = data.get("email") as string;
@@ -30,10 +25,12 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
 
     try {
       const user = await signIn(email, password);
-      handleSignInSuccess(successMessage);
+      // Use displayName if available, otherwise fallback to email
+      const displayName = user.displayName || email;
+      setSuccessMessage(`${displayName} successfully signed in.`);
       setShowSuccessModal(true);
       console.log("User signed in successfully:", user.displayName);
-      onClose(); // Close the modal on success
+      // Remove onClose() here so that the success modal can be seen
     } catch (err: unknown) {
       console.error("Error signing in:", err);
       if (err instanceof Error) {
@@ -42,6 +39,12 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
         setError("An error occurred during sign in.");
       }
     }
+  };
+
+  // Handler for closing the success modal and then the login modal
+  const handleSuccessModalClose = () => {
+    setShowSuccessModal(false);
+    onClose();
   };
 
   if (!open) return null;
@@ -111,7 +114,7 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
           <a href="#" className="text-primary hover:underline">
             Forgot password?
           </a>
-          <a href="#" className="text-primary hover:underline ">
+          <a href="#" className="text-primary hover:underline">
             Don’t have an account? Sign Up
           </a>
         </div>
@@ -122,9 +125,15 @@ const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
         >
           ✕
         </button>
+
+        {/* Success Modal */}
+        {showSuccessModal && (
+          <SuccessModal message={successMessage} onClose={handleSuccessModalClose} />
+        )}
       </div>
     </div>
   );
 };
 
 export default SignInModal;
+
