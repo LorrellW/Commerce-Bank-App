@@ -1,35 +1,44 @@
+//account/page.tsx
 "use client";
 
+import { useUser } from "@/app/context/UserContext";
 import { IdcardOutlined, PlusOutlined } from "@ant-design/icons";
 import { Table, Button, Modal, Form, Input } from "antd";
+import { styleText } from "node:util";
 import { useState } from "react";
 
 interface Account {
   key: string;
   name: string;
-  age: number;
-  address: string;
+  type: string;
+  amount: number;
 }
 
 interface AccountFormValues {
   name: string;
-  age: number;
-  address: string;
+  type: string;
+  amount: number;
 }
 
 export default function AccountPage() {
+  const {user} = useUser();
+  // if (!user) {
+  //   return <p className="text-center text-lg text-gray-600">Loading user info...</p>;
+  // }
+   
+  console.log(user);
   const [accounts, setAccounts] = useState<Account[]>([
     {
       key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
+      name: 'Account 1',
+      type: 'checking',
+      amount: 50,
     },
     {
       key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
+      name: 'Account 2',
+      type: 'savings',
+      amount: 50,
     },
   ]);
 
@@ -38,8 +47,8 @@ export default function AccountPage() {
 
   const columns = [
     { title: 'Name', dataIndex: 'name', key: 'name' },
-    { title: 'Age', dataIndex: 'age', key: 'age' },
-    { title: 'Address', dataIndex: 'address', key: 'address' },
+    { title: 'Type', dataIndex: 'type', key: 'type' },
+    { title: 'Amount', dataIndex: 'amount', key: 'amount' },
   ];
 
   // Show modal for adding a new account
@@ -65,7 +74,9 @@ export default function AccountPage() {
 
   return (
     <section>
-      <p className="text-6xl text-center text-black p-12">Hello, John Smith</p>
+      <p className="text-5xl text-center text-black font-thin font-sans pt-10 pb-24">{user?.firstName ?? "Guest"}'s account</p>
+      <div>
+      </div>
       {/* Render account card buttons dynamically */}
       <div className="shadow-xl grid grid-cols-3 gap-4 place-items-center">
         {accounts.map((account) => (

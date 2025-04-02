@@ -24,14 +24,14 @@ const StickyLayout = () => {
       </Image>
     </div>
 
-    <div className="bg-slate-300 h-60 w-72 place-content-center">
+    <div className="bg-slate-300 h-56 w-72 place-content-center">
     <Image className="object-fill"
       src={LineChart}
       alt="line chart">
       </Image>
     </div>
 
-    <div className="bg-slate-300 h-60 w-72 place-content-center">
+    <div className="bg-slate-300 h-56 w-72 place-content-center">
     <Image className="object-cover"
       src={LineChart2}
       alt="line chart">
@@ -48,9 +48,9 @@ const StickyLayout = () => {
 
     </div>
       <div className="sticky h-auto top-0 bg-gray-800 text-white p-6 pb-2 text-center">API -- Stock Data
-        <div className="w-96 h-60 m-2 bg-gray-600">box 1...</div>
-        <div className="w-96 h-60 m-2 bg-gray-600">box 2...</div>
-        <div className="w-96 h-60 m-2 bg-gray-600">box 3...</div>
+        <div className="w-96 h-56 m-2 bg-gray-600">box 1...</div>
+        <div className="w-96 h-56 m-2 bg-gray-600">box 2...</div>
+        <div className="w-96 h-56 m-2 bg-gray-600">box 3...</div>
       </div>
 
     </div>
