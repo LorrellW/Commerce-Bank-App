@@ -1,8 +1,11 @@
+// SignUpModal.tsx
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState, FormEvent } from "react";
 import { signUp } from "../../../Firbase/firebaseAuthService";
-import {useUser} from "@/app/context/UserContext"
+import { useUser } from "@/app/context/UserContext";
+
 interface SignUpModalProps {
   open: boolean;
   onClose: () => void;
@@ -11,22 +14,24 @@ interface SignUpModalProps {
 const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
   const { setUser } = useUser();
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
 
-    const data = new FormData(event.currentTarget);
-    const firstName = data.get("firstName") as string;
-    const lastName = data.get("lastName") as string;
-    const email = data.get("email") as string;
-    const password = data.get("password") as string;
+    const formData = new FormData(event.currentTarget);
+    const firstName = formData.get("firstName") as string;
+    const lastName = formData.get("lastName") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
 
     try {
       const user = await signUp(email, password, `${firstName} ${lastName}`);
       setUser({ firstName, lastName, email });
       console.log("User signed up successfully:", user);
-      onClose();
+      onClose(); // close the modal
+      router?.push("pages/settings"); // route to RegisterComponent
     } catch (err: unknown) {
       console.error("Error signing up:", err);
       if (err instanceof Error) {
@@ -41,14 +46,13 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300">
-  <div className="bg-blue-100 rounded-lg shadow-lg w-full max-w-md p-8 relative scale-95 animate-fadeIn">
+      <div className="bg-blue-100 rounded-lg shadow-lg w-full max-w-md p-8 relative scale-95 animate-fadeIn">
         <div className="flex flex-col items-center mb-6">
           <div className="bg-secondary p-3 rounded-full text-white mb-2">
-            {/* Optional icon can go here */}
+            {/* Optional icon */}
           </div>
           <h2 className="text-3xl text-slate-500 font-normal">Sign Up</h2>
         </div>
-
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
@@ -109,24 +113,16 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
-          <button
-            type="submit"
-            className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary-dark transition"
-          >
+          <button type="submit" className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary-dark transition">
             Sign Up
           </button>
         </form>
-
         <div className="flex justify-end mt-4 text-sm">
           <a href="#" className="text-primary hover:underline">
             Already have an account? Sign In
           </a>
         </div>
-
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-gray-700 hover:text-gray-700 text-md"
-        >
+        <button onClick={onClose} className="absolute top-3 right-3 text-gray-700 hover:text-gray-700 text-md">
           ✕
         </button>
       </div>
