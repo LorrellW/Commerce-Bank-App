@@ -1,72 +1,104 @@
 // RegisterComponent.tsx
-"use client";
-
+"use client"
 import React, { useState, useEffect } from "react";
 import { useUser } from "@/app/context/UserContext";
 import axios from "axios";
+import { useRouter } from 'next/navigation';
+
 
 export default function RegisterComponent() {
-  // Retrieve the user from the context
-  const { user } = useUser();
+  const { user,setUser } = useUser();  
+  const router = useRouter(); // ✅ define router here
+  const [, setMounted] = useState(false);
 
-  // Pre-populate firstName, lastName, and email using values from the user context.
+
+  /* ─────────────────── local form state ─────────────────── */
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [email, setEmail] = useState(user?.email || "");
-  
-  // Other form states for additional details
   const [about, setAbout] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
   const [city, setCity] = useState("");
   const [region, setRegion] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [country, setCountry] = useState("");
+  const [, setMessage] = useState("");
 
-  const [message, setMessage] = useState(""); // To show success/error messages
 
-
-  // Optionally update state if user context ever changes.
+  /* ----- pre‑fill from Context on first mount ----- */
   useEffect(() => {
+    setMounted(true)
     if (user) {
-      setFirstName(user.firstName);
-      setLastName(user.lastName);
-      setEmail(user.email);
+      setFirstName(user.firstName || "");
+      setLastName(user.lastName || "");
+      setEmail(user.email || "");
     }
   }, [user]);
 
-  // Handle form submission
+  
+    /* ─────────────────── submit handler ─────────────────── */
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!user?.uid) {
+      setMessage("Must be logged in via Firebase first.");
+      return;
+    }
     const userData = {
       firstName,
       lastName,
       email,
-      street: streetAddress, // adapt field names as needed
+      street: streetAddress,
       city,
       state: region,
       zip: zipCode,
       country,
+      firebase_uid: user.uid,
     };
 
-    //log the data to the console.
     console.log("Collected user data:", userData);
 
     try {
-      const response = await axios.post('/api/register', userData, {
-        headers: { 'Content-Type': 'application/json' },
+
+      const response = await axios.post("/api/register", userData, {
+        headers: { "Content-Type": "application/json" },
+        
       });
-      setMessage("Registration details saved successfully!");
-      console.log("User extra data saved in DB:", response.data);
-    } catch (error: any) {
-      console.error("Error saving registration details:", error);
-      setMessage("Error saving registration details.");
+      console.log("response",response.data); // contains CID inside customer
+      console.log(response.data.customer)
+      console.log(response.config);
+      console.log(response.headers);
+      console.log(response.request);
+      const result = response.data;
+      
+
+  
+      if (result.success && result.data) {
+        setMessage("Registration details saved successfully!");
+  
+        // ✅ Update context with new cID
+        setUser({
+          ...user!,
+          cID: result.data?.customer?.cID,
+          firstName,
+          lastName,
+        });
+        console.log(result.data?.data?.customer?.cID,"result.data?.data?.customer?.cID,");
+  
+      } else {
+        setMessage("Registration completed, but no user ID was returned.");
+      }
+  
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setMessage(`Error saving registration details: ${err.message}`);
+        console.error("Error saving registration details:", err.message);
+      } else {
+        setMessage("An unexpected error occurred.");
+        console.error("An unexpected error occurred:", err);
+      }
     }
   };
 
-
-  
-
- // Later, you can submit it to your backend API to store in PostgreSQL.
   return (
     <div className="w-full pt-8 pb-6">
       <form onSubmit={handleSubmit} className="place-items-center">
@@ -258,11 +290,20 @@ export default function RegisterComponent() {
           <button type="button" className="text-sm font-semibold text-gray-900">
             Cancel
           </button>
-          <button type="submit" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+          <button
+          type="submit" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
             Save
           </button>
+          <div>
+      <button
+        onClick={() => router.push('/pages/account')} // 👈 redirects to homepage
+        className="bg-black text-white h-36 w-36"
+      >
+        test
+      </button>
+    </div>
         </div>
       </form>
     </div>
   );
-}
+};

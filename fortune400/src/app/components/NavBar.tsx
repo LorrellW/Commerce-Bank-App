@@ -108,6 +108,10 @@ const Navbar: React.FC = () => {
             Services
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
           </Link>
+          <Link href="/pages/profile" className="relative group text-black hover:text-orange-700">
+            Profile
+            <span className="absolute left-0 -top-3 h-1 w-auto bg-orange-300 transition-all duration-300 group-hover:w-full"></span>
+          </Link>
           <Link href="/pages/settings" className="relative group text-black hover:text-orange-700">
             Settings
             <span className="absolute left-0 -top-3 h-1 w-auto bg-orange-300 transition-all duration-300 group-hover:w-full"></span>

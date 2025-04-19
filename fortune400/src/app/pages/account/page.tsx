@@ -1,7 +1,7 @@
-//account/page.tsx
+//app/pages/account/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "@/app/context/UserContext";
 
 interface Account {
@@ -11,33 +11,97 @@ interface Account {
   amount: number;
 }
 
-interface AccountFormValues {
-  name: string;
-  type: string;
+interface Transaction {
+  tID: number;
+  tDate: string;
   amount: number;
+  description: string;
 }
 
 export default function AccountPage() {
   const { user } = useUser();
-
-  const [accounts, setAccounts] = useState<Account[]>([
-    { key: "1", name: "Account 1", type: "checking", amount: 50 },
-    { key: "2", name: "Account 2", type: "savings", amount: 50 },
-  ]);
-
-  const [activeAccount, setActiveAccount] = useState<Account>(accounts[0]);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [activeAccount, setActiveAccount] = useState<Account | null>(null);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [formValues, setFormValues] = useState<AccountFormValues>({
-    name: "",
-    type: "",
-    amount: 0,
-  });
+  const [formValues, setFormValues] = useState({ name: "", type: "", amount: 0 });
 
   const showModal = () => setIsModalVisible(true);
   const closeModal = () => {
     setFormValues({ name: "", type: "", amount: 0 });
     setIsModalVisible(false);
   };
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      if (!user?.cID) {
+        console.warn("Missing user.cID, skipping fetchAccounts()");
+        console.log(user?.cID, "user.CID")
+        console.log(user?.uid, "user.uID - firebase")
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/account", {
+          headers: {
+            "x-user-cid": String(user.cID),
+          },
+        });
+
+        const json = await res.json();
+        console.log("Fetched accounts:", json);
+
+        if (json.success && Array.isArray(json.accounts)) {
+          const formatted = json.accounts.map((acc: any) => ({
+            key: String(acc.accountID),
+            name: acc.accountType,
+            type: acc.accountType,
+            amount: parseFloat(acc.balance),
+          }));
+          setAccounts(formatted);
+          if (!activeAccount && formatted.length > 0) {
+            setActiveAccount(formatted[0]);
+          }
+        } else {
+          console.warn("Account fetch failed or returned no accounts:", json.message);
+        }
+      } catch (error) {
+        console.log("Error fetching accounts:", error);
+      }
+    };
+
+    fetchAccounts();
+  }, [user?.cID]);
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      if (!activeAccount?.key) {
+        console.warn("Missing activeAccount.key, skipping fetchTransactions()");
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/transactions", {
+          headers: {
+            "x-account-id": activeAccount.key,
+          },
+        });
+
+        const data = await res.json();
+        console.log("Fetched transactions:", data);
+
+        if (data.success && Array.isArray(data.transactions)) {
+          setTransactions(data.transactions);
+        } else {
+          setTransactions([]);
+        }
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
+
+    fetchTransactions();
+  }, [activeAccount]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,30 +114,32 @@ export default function AccountPage() {
     closeModal();
   };
 
+  if (!activeAccount) return <p className="w-screen h-[600px] p-10 text-center text-black justify-center place-content-center text-xl">Loading accounts...</p>;
+
   return (
     <section className="px-6 py-10">
       <h1 className="text-5xl text-center font-light text-black pb-16">
-      {user ? `${user.firstName} ${user.lastName}` : "Guest"}&apos;s account
+        {user ? `${user.firstName} ${user.lastName}` : "Guest"}&apos;s account
       </h1>
 
       <div className="grid grid-cols-3 gap-6 place-items-center mb-12">
         {accounts.map((account) => (
           <button
-          key={account.key}
-          onClick={() => setActiveAccount(account)}
-          className="relative w-52 h-28 bg-[url('/blueCC.jpg')] bg-cover border text-white rounded-xl shadow-lg hover:shadow-zinc-600 transition overflow-hidden"
-        >
-          <div className="relative z-10 text-lg font-semibold  pl-6 rounded">
-            {account.name}
-          </div>
-        </button>
+            key={account.key}
+            onClick={() => setActiveAccount(account)}
+            className="relative w-52 h-28 bg-[url('/blueCC.jpg')] bg-cover border text-white rounded-xl shadow-lg hover:shadow-zinc-600 transition overflow-hidden"
+          >
+            <div className="relative z-10 text-lg font-semibold pl-6 rounded">
+              {account.name}
+            </div>
+          </button>
         ))}
 
         <button
           onClick={showModal}
           className="flex items-center justify-center w-48 h-28 border border-cyan-700 bg-gray-100 text-black rounded-xl font-bold shadow hover:shadow-md transition"
         >
-          Add New Account<br/>➕ 
+          Add New Account<br />➕
         </button>
       </div>
 
@@ -90,7 +156,7 @@ export default function AccountPage() {
             <tr className="text-gray-700 bg-white">
               <td className="px-6 py-4 border-b">{activeAccount.name}</td>
               <td className="px-6 py-4 border-b">{activeAccount.type}</td>
-              <td className="px-6 py-4 border-b">${activeAccount.amount}</td>
+              <td className="px-6 py-4 border-b">${activeAccount.amount.toFixed(2)}</td>
             </tr>
           </tbody>
         </table>

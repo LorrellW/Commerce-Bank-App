@@ -9,15 +9,19 @@ import {
   ReactNode,
 } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import app from "@/../Firbase/firebaseConfig"; // Adjust the path as needed
+import app from "@/../Firbase/firebaseConfig";
 
 const auth = getAuth(app);
 
-export type User = {
-  firstName: string;
-  lastName: string;
+export interface User {
+  uid: string;
   email: string;
-};
+  displayName?: string;
+  photoURL?: string;
+  cID?: number;
+  firstName?: string;
+  lastName?: string;
+}
 
 interface UserContextType {
   user: User | null;
@@ -31,23 +35,42 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const stored = localStorage.getItem("user");
+    console.log("user item", stored)
     if (stored) {
       setUserState(JSON.parse(stored));
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       if (firebaseUser) {
-        // Extract user info from firebaseUser.
-        // This example splits displayName into first and last name.
         const displayName = firebaseUser.displayName || "";
-        const nameParts = displayName.split(" ");
-        const firstName = nameParts[0] || "";
-        const lastName = nameParts.slice(1).join(" ") || "";
+        const [firstName, ...lastNameParts] = displayName.split(" ");
+        const lastName = lastNameParts.join(" ");
+
+
         const updatedUser: User = {
+          uid: firebaseUser.uid,
+          email: firebaseUser.email || "",
+          displayName,
+          photoURL: firebaseUser.photoURL || "",
           firstName,
           lastName,
-          email: firebaseUser.email || "",
         };
+
+        // Fetch cID from your backend after firebase authentication
+        try {
+          console.log("updatedUser",updatedUser)
+          console.log(updatedUser.cID)
+          const response = await fetch(`/api/users-sync?uid=${firebaseUser.uid}`);
+          const result = await response.json();
+          if (result.success && result.cID) {
+            updatedUser.cID = result.cID;
+          } else {
+            console.warn("No cID found for user.");
+          }
+        } catch (error) {
+          console.error("Error fetching cID:", error);
+        }
+
         setUserState(updatedUser);
         localStorage.setItem("user", JSON.stringify(updatedUser));
       } else {
@@ -82,4 +105,3 @@ export const useUser = (): UserContextType => {
   }
   return context;
 };
-
