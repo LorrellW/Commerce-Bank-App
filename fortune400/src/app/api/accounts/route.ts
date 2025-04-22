@@ -1,3 +1,5 @@
+//api/accounts/route.ts
+
 import { pool } from "@/app/db/dbConnect";
 import { NextResponse } from "next/server";
 

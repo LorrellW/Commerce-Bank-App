@@ -1,119 +1,95 @@
-import { NextResponse } from 'next/server';
-import { pool } from '@/app/db/dbConnect';
+// src/app/api/register/route.ts
+import { NextResponse } from "next/server";
+import { pool } from "@/app/db/dbConnect";
 
-export async function POST(request: Request) {
+export async function POST(req: Request) {
+  const body = await req.json();
+
+  /* ───── basic validation ───── */
+  const {
+    firstName, lastName, email,
+    phoneNumber,
+    street, city, state, zip, country,
+    firebase_uid                           // ← sent by the client
+  } = body;
+
+  if (!firstName || !lastName || !email || !firebase_uid) {
+    return NextResponse.json(
+      { success: false, message: "Missing firstName, lastName, email or firebase_uid" },
+      { status: 400 }
+    );
+  }
+
+  const client = await pool.connect();
   try {
-    const body = await request.json();
-    const {
-      firstName,
-      lastName,
-      phoneNumber,
-      email,
-      street,
-      city,
-      state,
-      zip,
-      country,
-      firebase_uid,
-    } = body;
+    await client.query("BEGIN");
 
-    if (!firstName || !lastName || !email) {
-      return NextResponse.json(
-        { success: false, message: 'Missing required fields: firstName, lastName, or email.' },
-        { status: 400 }
-      );
-    }
+    /* ───── 1) name ───── */
+    const nameRes = await client.query(
+      `INSERT INTO name ("firstName", "lastName")
+       VALUES ($1, $2) RETURNING "nameID"`,
+      [firstName, lastName]
+    );
+    const nameID = nameRes.rows[0].nameID;
 
-    const client = await pool.connect();
+    /* ───── 2) address ───── */
+    const addrRes = await client.query(
+      `INSERT INTO address ("street","city","state","zip","country")
+       VALUES ($1,$2,$3,$4,$5) RETURNING "addressID"`,
+      [street, city, state, zip, country]
+    );
+    const addressID = addrRes.rows[0].addressID;
 
-    try {
-      await client.query('BEGIN');
+    /* ───── 3) customer ───── */
+    const custRes = await client.query(
+      `INSERT INTO customer ("nameID","addressID","phoneNumber","email","firebase_uid")
+       VALUES ($1,$2,$3,$4,$5)
+       RETURNING "cID"`,
+      [nameID, addressID, phoneNumber ?? null, email, firebase_uid]
+    );
+    const cID = custRes.rows[0].cID;
 
-      // Insert into name
-      const insertNameQuery = `
-        INSERT INTO name ("firstName", "lastName")
-        VALUES ($1, $2)
-        RETURNING "nameID";
-      `;
-      const nameResult = await client.query(insertNameQuery, [firstName, lastName]);
-      const nameID = nameResult.rows[0].nameID;
+    /* ───── 4) account (first current/checking account) ───── */
+    const accountType   = "checking";
+    const initialAmount = 500.00;
 
-      // Insert into address
-      const insertAddressQuery = `
-        INSERT INTO address ("street", "city", "state", "zip", "country")
-        VALUES ($1, $2, $3, $4, $5)
-        RETURNING "addressID";
-      `;
-      const addressResult = await client.query(insertAddressQuery, [street, city, state, zip, country]);
-      const addressID = addressResult.rows[0].addressID;
+    const accRes = await client.query(
+      `INSERT INTO account ("cID","accountType","creationDate","balance")
+       VALUES ($1,$2,CURRENT_DATE,$3)
+       RETURNING "accountID","balance","accountType"`,
+      [cID, accountType, initialAmount]
+    );
+    const accountID = accRes.rows[0].accountID;
 
-      // Insert into customer
-      const insertCustomerQuery = `
-        INSERT INTO customer ("nameID", "addressID", "phoneNumber", "email", "firebase_uid")
-        VALUES ($1, $2, $3, $4, $5)
-        RETURNING "cID";
-      `;
-      const customerResult = await client.query(insertCustomerQuery, [
-        nameID,
-        addressID,
-        phoneNumber || null,
-        email,
-        firebase_uid,
-      ]);
-      const cID = customerResult.rows[0].cID;
+    /* ───── 5) first transaction (initial deposit) ───── */
+    const txRes = await client.query(
+      `INSERT INTO transactions ("accountID","tDate","amount","description")
+       VALUES ($1,CURRENT_DATE,$2,$3)
+       RETURNING *`,
+      [accountID, initialAmount, "Initial deposit"]
+    );
 
-      // Insert into account
-      const insertAccountQuery = `
-      INSERT INTO account ("cID", "accountType", "creationDate", "closeDate", "balance")
-      VALUES ($1, $2, CURRENT_DATE, NULL, $3)
-      RETURNING "accountID";
-    `;
-    const accountType = "checking";
-    const initialBalance = 500.00;
-    
-    const accountResult = await client.query(insertAccountQuery, [cID, accountType, initialBalance]);
-    const accountID = accountResult.rows[0].accountID;
+    await client.query("COMMIT");
 
-     // Insert into transactions
-    const insertTransactionQuery = `
-      INSERT INTO transactions ("accountID", "tDate", "amount", "description")
-      VALUES ($1, CURRENT_DATE, $2, $3)
-      RETURNING *;
-      `;
+    /* ───── success payload ───── */
+    return NextResponse.json(
+      {
+        success: true,
+        customer:   { cID },
+        account:    accRes.rows[0],
+        transaction: txRes.rows[0]
+      },
+      { status: 201 }
+    );
 
-    const description = "Initial deposit";
-
-    const transactionResult = await client.query(insertTransactionQuery, [
-    accountID,         // ✅ Foreign key to account.accountID
-    initialBalance,    // 💵 First deposit value
-    description        // 📝 Contextual message
-    ]);
-
-      await client.query('COMMIT');
-
-      return NextResponse.json(
-        {
-          success: true,
-          message: 'Registration, account, and initial transaction successful.',
-          data: {
-            customer: customerResult.rows[0],
-            account: accountResult.rows[0],
-            transaction: transactionResult.rows[0],
-          },
-        },
-        { status: 201 }
-      );
-
-    } catch (err: unknown) {
-      await client.query('ROLLBACK');
-      console.error("Database error:", err);
-      return NextResponse.json({ success: false, message: 'Internal server error.' }, { status: 500 });
-    } finally {
-      client.release();
-    }
-
-  } catch (err: unknown) {
-    console.error("Request error:", err);
-    return NextResponse.json({ success: false, message: 'Error processing request.' }, { status: 400 });
+  } catch (err) {
+    await client.query("ROLLBACK");
+    console.error("Registration error:", err);
+    return NextResponse.json(
+      { success: false, message: "Database error" },
+      { status: 500 }
+    );
+  } finally {
+    client.release();
   }
 }

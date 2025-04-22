@@ -1,14 +1,22 @@
-//app/pages/account/page.tsx
+// app/pages/account/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { useUser } from "@/app/context/UserContext";
 
+/* ─────────────── types that match the API ─────────────── */
+interface AccountAPI {
+  accountID: number;
+  accountType: string;
+  balance: string;         // comes back as text from Postgres
+}
+
 interface Account {
-  key: string;
+  id: number;
   name: string;
   type: string;
-  amount: number;
+  balance: number;
 }
 
 interface Transaction {
@@ -20,212 +28,135 @@ interface Transaction {
 
 export default function AccountPage() {
   const { user } = useUser();
-  const [accounts, setAccounts] = useState<Account[]>([]);
-  const [activeAccount, setActiveAccount] = useState<Account | null>(null);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [formValues, setFormValues] = useState({ name: "", type: "", amount: 0 });
 
-  const showModal = () => setIsModalVisible(true);
-  const closeModal = () => {
-    setFormValues({ name: "", type: "", amount: 0 });
-    setIsModalVisible(false);
-  };
+  /* ───────── local state ───────── */
+  const [accounts,      setAccounts]      = useState<Account[]>([]);
+  const [active,        setActive]        = useState<Account | null>(null);
+  const [transactions,  setTransactions]  = useState<Transaction[]>([]);
+  const [loadingAcc,    setLoadingAcc]    = useState(false);
+  const [loadingTx,     setLoadingTx]     = useState(false);
+  const [err,           setErr]           = useState("");
 
+  /* ───────── fetch ACCOUNTS once we know cID ───────── */
   useEffect(() => {
-    const fetchAccounts = async () => {
-      if (!user?.cID) {
-        console.warn("Missing user.cID, skipping fetchAccounts()");
-        console.log(user?.cID, "user.CID")
-        console.log(user?.uid, "user.uID - firebase")
-        return;
-      }
-
-      try {
-        const res = await fetch("/api/account", {
-          headers: {
-            "x-user-cid": String(user.cID),
-          },
-        });
-
-        const json = await res.json();
-        console.log("Fetched accounts:", json);
-
-        if (json.success && Array.isArray(json.accounts)) {
-          const formatted = json.accounts.map((acc: any) => ({
-            key: String(acc.accountID),
-            name: acc.accountType,
-            type: acc.accountType,
-            amount: parseFloat(acc.balance),
-          }));
-          setAccounts(formatted);
-          if (!activeAccount && formatted.length > 0) {
-            setActiveAccount(formatted[0]);
-          }
-        } else {
-          console.warn("Account fetch failed or returned no accounts:", json.message);
-        }
-      } catch (error) {
-        console.log("Error fetching accounts:", error);
-      }
-    };
-
-    fetchAccounts();
+    if (!user?.cID) return;               // still waiting for Context
+    setLoadingAcc(true);
+    axios
+      .get("/api/accounts", { headers: { "x-user-cid": user.cID } })
+      .then(res => {
+        const rows: AccountAPI[] = res.data?.accounts ?? [];
+        const list: Account[] = rows.map(r => ({
+          id:       r.accountID,
+          name:     r.accountType,        // use nicer label if you like
+          type:     r.accountType,
+          balance:  Number(r.balance)
+        }));
+        setAccounts(list);
+        setActive(a => a ?? list[0] ?? null);   // pick first one on first load
+        setErr("");
+      })
+      .catch(e => setErr("Could not load accounts"))
+      .finally(() => setLoadingAcc(false));
   }, [user?.cID]);
 
+  /* ───────── fetch TRANSACTIONS every time active id changes ───────── */
   useEffect(() => {
-    const fetchTransactions = async () => {
-      if (!activeAccount?.key) {
-        console.warn("Missing activeAccount.key, skipping fetchTransactions()");
-        return;
-      }
+    if (!active) return;
+    setLoadingTx(true);
+    axios
+      .get("/api/transactions", { headers: { "x-account-id": active.id } })
+      .then(res => {
+        setTransactions(res.data?.transactions ?? []);
+        setErr("");
+      })
+      .catch(e => setErr("Could not load transactions"))
+      .finally(() => setLoadingTx(false));
+  }, [active?.id]);
 
-      try {
-        const res = await fetch("/api/transactions", {
-          headers: {
-            "x-account-id": activeAccount.key,
-          },
-        });
-
-        const data = await res.json();
-        console.log("Fetched transactions:", data);
-
-        if (data.success && Array.isArray(data.transactions)) {
-          setTransactions(data.transactions);
-        } else {
-          setTransactions([]);
-        }
-      } catch (error) {
-        console.error("Error fetching transactions:", error);
-      }
-    };
-
-    fetchTransactions();
-  }, [activeAccount]);
-
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const newAccount: Account = {
-      key: String(accounts.length + 1),
-      ...formValues,
-    };
-    setAccounts([...accounts, newAccount]);
-    setActiveAccount(newAccount);
-    closeModal();
-  };
-
-  if (!activeAccount) return <p className="w-screen h-[600px] p-10 text-center text-black justify-center place-content-center text-xl">Loading accounts...</p>;
+  /* ───────── UI branches ───────── */
+  if (loadingAcc) return <p className="p-10 text-center text-xl">Loading accounts…</p>;
+  if (err)        return <p className="p-10 text-center text-xl text-red-600">{err}</p>;
 
   return (
     <section className="px-6 py-10">
       <h1 className="text-5xl text-center font-light text-black pb-16">
-        {user ? `${user.firstName} ${user.lastName}` : "Guest"}&apos;s account
+        {user ? `${user.firstName} ${user.lastName}` : "Guest"}&apos;s accounts
       </h1>
 
-      <div className="grid grid-cols-3 gap-6 place-items-center mb-12">
-        {accounts.map((account) => (
-          <button
-            key={account.key}
-            onClick={() => setActiveAccount(account)}
-            className="relative w-52 h-28 bg-[url('/blueCC.jpg')] bg-cover border text-white rounded-xl shadow-lg hover:shadow-zinc-600 transition overflow-hidden"
-          >
-            <div className="relative z-10 text-lg font-semibold pl-6 rounded">
-              {account.name}
-            </div>
-          </button>
-        ))}
-
-        <button
-          onClick={showModal}
-          className="flex items-center justify-center w-48 h-28 border border-cyan-700 bg-gray-100 text-black rounded-xl font-bold shadow hover:shadow-md transition"
-        >
-          Add New Account<br />➕
-        </button>
-      </div>
-
-      <div className="overflow-x-auto mb-10">
-        <table className="min-w-full table-auto border border-gray-300 rounded">
-          <thead>
-            <tr className="bg-gray-200 text-left text-sm uppercase text-gray-600">
-              <th className="px-6 py-3 border-b">Name</th>
-              <th className="px-6 py-3 border-b">Type</th>
-              <th className="px-6 py-3 border-b">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className="text-gray-700 bg-white">
-              <td className="px-6 py-4 border-b">{activeAccount.name}</td>
-              <td className="px-6 py-4 border-b">{activeAccount.type}</td>
-              <td className="px-6 py-4 border-b">${activeAccount.amount.toFixed(2)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      {/* Modal */}
-      {isModalVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-          <div className="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">Add New Account</h2>
-
-            <form onSubmit={onSubmit} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Name</label>
-                <input
-                  type="text"
-                  required
-                  className="w-full mt-1 px-3 py-2 border text-black border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                  value={formValues.name}
-                  onChange={(e) => setFormValues({ ...formValues, name: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Type</label>
-                <input
-                  type="text"
-                  required
-                  className="w-full mt-1 px-3 py-2 border text-black border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                  value={formValues.type}
-                  onChange={(e) => setFormValues({ ...formValues, type: e.target.value })}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Amount</label>
-                <input
-                  type="number"
-                  required
-                  className="w-full mt-1 px-3 py-2 border text-black border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                  value={formValues.amount}
-                  onChange={(e) =>
-                    setFormValues({ ...formValues, amount: Number(e.target.value) })
-                  }
-                />
-              </div>
-
-              <div className="flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="px-4 py-2 text-sm text-gray-700 border border-gray-400 rounded hover:bg-gray-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm text-white bg-cyan-700 rounded hover:bg-cyan-800"
-                >
-                  Create Account
-                </button>
-              </div>
-            </form>
-
+      {/* ───── account selector ───── */}
+      {accounts.length === 0 ? (
+        <p className="text-center text-lg mb-12">No accounts yet.</p>
+      ) : (
+        <div className="grid grid-cols-3 gap-6 place-items-center mb-12">
+          {accounts.map(acc => (
             <button
-              onClick={closeModal}
-              className="absolute top-3 right-3 text-gray-400 hover:text-gray-700"
+              key={acc.id}
+              onClick={() => setActive(acc)}
+              className={`relative w-52 h-28 bg-[url('/blueCC.jpg')] bg-cover border text-white rounded-xl shadow-lg transition
+                         ${active?.id === acc.id ? "ring-4 ring-cyan-500" : "hover:shadow-zinc-600"}`}
             >
-              ✕
+              <span className="relative z-10 text-lg font-semibold pl-6 top-6 block">
+                {acc.name}
+              </span>
             </button>
-          </div>
+          ))}
+        </div>
+      )}
+
+      {/* ───── active account summary ───── */}
+      {active && (
+        <div className="overflow-x-auto mb-10">
+          <table className="min-w-full table-auto border border-gray-300 rounded">
+            <thead>
+              <tr className="bg-gray-200 text-left text-sm uppercase text-gray-600">
+                <th className="px-6 py-3 border-b">Name</th>
+                <th className="px-6 py-3 border-b">Type</th>
+                <th className="px-6 py-3 border-b">Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="text-gray-700 bg-white">
+                <td className="px-6 py-4 border-b">{active.name}</td>
+                <td className="px-6 py-4 border-b">{active.type}</td>
+                <td className="px-6 py-4 border-b">${active.balance.toFixed(2)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* ───── transactions for the active account ───── */}
+      {active && (
+        <div className="overflow-x-auto">
+          <h2 className="text-2xl text-black mb-4">Recent transactions</h2>
+          {loadingTx ? (
+            <p>Loading transactions…</p>
+          ) : transactions.length === 0 ? (
+            <p>No transactions yet.</p>
+          ) : (
+            <table className="min-w-full table-auto border border-gray-300 rounded">
+              <thead>
+                <tr className="bg-gray-200 text-left text-sm uppercase text-gray-600">
+                  <th className="px-6 py-3 border-b">Date</th>
+                  <th className="px-6 py-3 border-b">Description</th>
+                  <th className="px-6 py-3 border-b">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transactions.map(tx => (
+                  <tr key={tx.tID} className="text-gray-700 bg-white">
+                    <td className="px-6 py-2 border-b">
+                      {new Date(tx.tDate).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-2 border-b">{tx.description}</td>
+                    <td className="px-6 py-2 border-b">
+                      ${Number(tx.amount).toFixed(2)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       )}
     </section>
