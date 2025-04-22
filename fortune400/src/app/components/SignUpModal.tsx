@@ -1,8 +1,12 @@
+// components/SignUpModal.tsx
 "use client";
 
-import { useState, FormEvent } from "react";
-import { signUp } from "../../../Firbase/firebaseAuthService";
-import {useUser} from "@/app/context/UserContext"
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
+import axios from "axios";
+import { signUp } from "@/../Firbase/firebaseAuthService";
+import { useUser } from "@/app/context/UserContext";
+
 interface SignUpModalProps {
   open: boolean;
   onClose: () => void;
@@ -11,127 +15,149 @@ interface SignUpModalProps {
 const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
   const { setUser } = useUser();
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  /* submit ─────────────────────────────────────────────── */
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setError(null);
 
-    const data = new FormData(event.currentTarget);
-    const firstName = data.get("firstName") as string;
-    const lastName = data.get("lastName") as string;
-    const email = data.get("email") as string;
-    const password = data.get("password") as string;
+    const f = new FormData(e.currentTarget);
+    const firstName = f.get("firstName") as string;
+    const lastName  = f.get("lastName")  as string;
+    const email     = f.get("email")     as string;
+    const password  = f.get("password")  as string;
+    const street    = f.get("street")    as string;
+    const city      = f.get("city")      as string;
+    const state     = f.get("state")     as string;
+    const zip       = f.get("zip")       as string;
+    const country   = f.get("country")   as string;
 
     try {
-      const user = await signUp(email, password, `${firstName} ${lastName}`);
-      setUser({ firstName, lastName, email });
-      console.log("User signed up successfully:", user);
+      /* 1️⃣  Firebase account */
+      const fbUser = await signUp(email, password, `${firstName} ${lastName}`);
+
+      /* 2️⃣  Insert / fetch customer in Postgres */
+      const { data } = await axios.post("/api/register", {
+        firebase_uid: fbUser.uid,
+        firstName, lastName, email,
+        street, city, state, zip, country
+      });
+
+      /* 3️⃣  Global state (one shot) */
+      setUser({
+        uid: fbUser.uid,
+        email: fbUser.email || email,
+        displayName: fbUser.displayName || `${firstName} ${lastName}`,
+        //photoURL: fbUser.photoURL || "",
+        firstName,
+        lastName,
+        cID: data.customer.cID
+      });
+
       onClose();
-    } catch (err: unknown) {
-      console.error("Error signing up:", err);
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An error occurred during sign up.");
-      }
+      router.push('/pages/profile');
+    } catch (err) {
+      console.error(err);
+      setError(err instanceof Error ? err.message : "Sign-up failed.");
     }
   };
 
   if (!open) return null;
 
+  /* UI ─────────────────────────────────────────────────── */
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300">
-  <div className="bg-blue-100 rounded-lg shadow-lg w-full max-w-md p-8 relative scale-95 animate-fadeIn">
-        <div className="flex flex-col items-center mb-6">
-          <div className="bg-secondary p-3 rounded-full text-white mb-2">
-            {/* Optional icon can go here */}
-          </div>
-          <h2 className="text-3xl text-slate-500 font-normal">Sign Up</h2>
-        </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+      <div className="bg-blue-100 rounded-lg shadow-lg w-full max-w-lg p-9 relative animate-fadeIn">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-gray-700 text-lg"
+        >
+          ✕
+        </button>
 
+        <h2 className="text-3xl text-center text-slate-600 mb-6">Sign Up</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* name row */}
+          <div className="grid grid-cols-2 gap-6 text-black">
             <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-black">
-                First Name
-              </label>
-              <input
-                id="firstName"
-                name="firstName"
-                type="text"
-                required
-                autoComplete="given-name"
-                className="mt-1 w-full rounded-md border border-gray-300 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              />
+              <label className="block text-sm font-medium text-black">First Name</label>
+              <input name="firstName" 
+                     autoComplete="given-name" 
+                     required
+                     className="input h-8 w-full rounded-md" />
             </div>
             <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-black">
-                Last Name
-              </label>
-              <input
-                id="lastName"
-                name="lastName"
-                type="text"
-                required
-                autoComplete="family-name"
-                className="mt-1 w-full rounded-md border border-gray-300 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              />
+              <label className="block text-sm font-medium text-black">Last Name</label>
+              <input name="lastName"
+                     autoComplete="family-name" 
+                     required
+                     className="input h-8 rounded-md w-full" />
             </div>
+            </div>
+
+          {/* email + password */}
+          <div className="grid grid-cols-2 gap-6">
+          <div className="text-black">
+            <label className="block text-sm font-medium text-black">Email</label>
+            <input name="email"
+                   type="email" 
+                   autoComplete="email" 
+                   required 
+                   className="input h-8 rounded-md w-full" />
+          </div>
+          <div className="text-black">
+            <label className="block text-sm font-medium text-black">Password</label>
+            <input name="password" 
+                   type="password" 
+                   autoComplete="new-password" 
+                   required 
+                   className="input h-8 rounded-md w-full" />
+          </div>
+          </div>
+          
+
+          {/* address */}
+          <div className="text-black ">
+            <label className="block text-sm font-medium text-black">Address</label>
+            <input name="street"
+                   placeholder="  Street"
+                   className="input h-8 rounded-md w-full" />
           </div>
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-black">
-              Email Address
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              autoComplete="email"
-              className="mt-1 w-full rounded-md border border-gray-300 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            />
+          <div className="grid grid-cols-2 gap-6">
+            <input name="city"
+                   placeholder="  City"   
+                   className="input h-8 rounded-md" />
+
+            <input name="state"  
+                   placeholder="  State"  
+                   className="input h-8 rounded-md" />
           </div>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-black">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              autoComplete="new-password"
-              className="mt-1 w-full rounded-md border border-gray-300 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-            />
+          <div className="grid grid-cols-2 gap-6 pb-8">
+            <input name="zip"     
+                   placeholder="  ZIP"    
+                   className="input h-8 rounded-md" />
+
+            <input name="country" 
+                   placeholder="  Country" 
+                   className="input h-8 rounded-md" />
           </div>
 
           {error && <p className="text-red-600 text-sm">{error}</p>}
 
           <button
             type="submit"
-            className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary-dark transition"
+            className="w-full bg-primary text-white py-3 rounded-md hover:bg-primary-dark"
           >
-            Sign Up
+            Create Account
           </button>
         </form>
-
-        <div className="flex justify-end mt-4 text-sm">
-          <a href="#" className="text-primary hover:underline">
-            Already have an account? Sign In
-          </a>
-        </div>
-
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-gray-700 hover:text-gray-700 text-md"
-        >
-          ✕
-        </button>
       </div>
     </div>
   );
 };
 
+/* Tailwind alias for brevity */
 export default SignUpModal;

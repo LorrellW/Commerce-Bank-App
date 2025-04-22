@@ -12,6 +12,12 @@ import app from "../Firbase/firebaseConfig"; // Verify the path and folder name 
 
 const auth = getAuth(app);
 
+export interface FirebaseUser {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+}
+
 /**
  * Signs up a new user using Firebase Authentication.
  * @param email - The user's email.
@@ -19,17 +25,21 @@ const auth = getAuth(app);
  * @param displayName - (Optional) The display name for the user.
  * @returns The signed-up user.
  */
-export const signUp = async (
+export async function signUp(
   email: string,
   password: string,
-  displayName?: string
-): Promise<User> => {
+  displayName: string
+): Promise<FirebaseUser> {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  if (displayName) {
-    await updateProfile(userCredential.user, { displayName });
-  }
-  return userCredential.user;
-};
+  const user = userCredential.user;
+  // Update the displayName in Firebase user profile
+  await updateProfile(user, { displayName });
+  return {
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName,
+  };
+}
 
 /**
  * Signs in an existing user using Firebase Authentication.

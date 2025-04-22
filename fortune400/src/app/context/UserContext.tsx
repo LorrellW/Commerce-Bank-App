@@ -2,84 +2,70 @@
 "use client";
 
 import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from "react";
+  createContext, useContext, useState, useEffect, ReactNode } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import app from "@/../Firbase/firebaseConfig"; // Adjust the path as needed
+import app from "@/../Firbase/firebaseConfig";
 
-const auth = getAuth(app);
-
-export type User = {
-  firstName: string;
-  lastName: string;
+export interface User {
+  uid: string;
   email: string;
-};
-
-interface UserContextType {
-  user: User | null;
-  setUser: (user: User | null) => void;
+  displayName?: string;
+  photoURL?: string;
+  cID?: number;
+  firstName?: string;
+  lastName?: string;
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+interface Ctx { user: User | null; setUser: (u: User | null) => void }
+const UserContext = createContext<Ctx | undefined>(undefined);
 
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUserState] = useState<User | null>(null);
 
+  /* Restore from localStorage on first mount */
   useEffect(() => {
-    const stored = localStorage.getItem("user");
-    if (stored) {
-      setUserState(JSON.parse(stored));
-    }
-
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-      if (firebaseUser) {
-        // Extract user info from firebaseUser.
-        // This example splits displayName into first and last name.
-        const displayName = firebaseUser.displayName || "";
-        const nameParts = displayName.split(" ");
-        const firstName = nameParts[0] || "";
-        const lastName = nameParts.slice(1).join(" ") || "";
-        const updatedUser: User = {
-          firstName,
-          lastName,
-          email: firebaseUser.email || "",
-        };
-        setUserState(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-      } else {
-        setUserState(null);
-        localStorage.removeItem("user");
-      }
-    });
-
-    return () => unsubscribe();
+    const saved = localStorage.getItem("user");
+    if (saved) setUserState(JSON.parse(saved));
   }, []);
 
-  const setUser = (user: User | null) => {
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-    setUserState(user);
+  /* Keep localStorage in sync */
+  const setUser = (u: User | null) => {
+    if (u) localStorage.setItem("user", JSON.stringify(u));
+    else   localStorage.removeItem("user");
+    setUserState(u);
   };
 
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
-  );
+  /* If the tab loads and Firebase is already authed, fill basic data
+     (cID will already be in localStorage if this device registered before) */
+     useEffect(() => {
+      const auth = getAuth(app);
+    
+      return onAuthStateChanged(auth, fb => {
+        if (!fb) {
+          setUser(null);
+          return;
+        }
+    
+        /* If user already in context/localStorage, keep it */
+        if (user) return;
+    
+        /* Otherwise create the bare‑bones user object */
+        const fresh: User = {
+          uid: fb.uid,
+          email: fb.email || "",
+          displayName: fb.displayName || "",
+          photoURL: fb.photoURL || ""
+        };
+        setUser(fresh);              // ← value, not function
+      });
+    }, [user]);                      // add `user` to deps
+    
+
+  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };
 
-export const useUser = (): UserContextType => {
-  const context = useContext(UserContext);
-  if (!context) {
-    throw new Error("useUser must be used within a UserProvider");
-  }
-  return context;
+export const useUser = () => {
+  const ctx = useContext(UserContext);
+  if (!ctx) throw new Error("useUser must be inside <UserProvider>");
+  return ctx;
 };
-
