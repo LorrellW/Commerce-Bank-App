@@ -55,7 +55,7 @@ export default function AccountPage() {
         setActive(a => a ?? list[0] ?? null);   // pick first one on first load
         setErr("");
       })
-      .catch(e => setErr("Could not load accounts"))
+      .catch(() => setErr("Could not load accounts"))
       .finally(() => setLoadingAcc(false));
   }, [user?.cID]);
 
@@ -69,9 +69,9 @@ export default function AccountPage() {
         setTransactions(res.data?.transactions ?? []);
         setErr("");
       })
-      .catch(e => setErr("Could not load transactions"))
+      .catch(() => setErr("Could not load transactions"))
       .finally(() => setLoadingTx(false));
-  }, [active?.id]);
+  }, [active]);
 
   /* ───────── UI branches ───────── */
   if (loadingAcc) return <p className="p-10 text-center text-xl">Loading accounts…</p>;

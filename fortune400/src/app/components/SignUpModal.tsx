@@ -160,5 +160,4 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
 };
 
 /* Tailwind alias for brevity */
-const input = "mt-1 w-full rounded-md border border-gray-300 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent";
 export default SignUpModal;

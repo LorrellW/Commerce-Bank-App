@@ -67,7 +67,7 @@ export default function Dashboard() {
   }, [activeTx, accounts, activeId]);
 
   /* pie‑chart data: naive “category” buckets pulled from description keywords */
-  const cats = ["grocery","rent","fuel","salary","transfer"];
+  const cats = useMemo(() => ["grocery","rent","fuel","salary","transfer"], []);
   const pie = useMemo(() => {
     const m: Record<string,number> = {};
     cats.forEach(c => m[c]=0);
@@ -76,7 +76,7 @@ export default function Dashboard() {
       m[key] = (m[key] || 0) + Math.abs(t.amount);
     });
     return Object.entries(m).map(([name,value])=>({name,value}));
-  }, [activeTx]);
+  }, [activeTx, cats]);
 
   /* bar‑chart data: spend vs income each month (all accounts) */
   const bar = useMemo(() => {
