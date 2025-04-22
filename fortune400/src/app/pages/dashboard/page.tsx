@@ -10,6 +10,11 @@ import {
   PieChart, Pie, Cell,
   BarChart, Bar, CartesianGrid, Legend,
 } from "recharts";
+import LockOutlined, { BankFilled, LockFilled } from "@ant-design/icons"; 
+import Image from "next/image";
+import { BalanceOutlined, LockClockTwoTone, LockPersonOutlined } from "@mui/icons-material";
+
+
 
 interface AccountApi {
   accountID: number;
@@ -90,7 +95,18 @@ export default function Dashboard() {
     return Object.entries(map).map(([month,{income,spend}])=>({month,income,spend}));
   }, [tx]);
 
-  if (loading) return <p className="text-center text-xl py-20">Loading dashboard…</p>;
+  // if (loading) return <p className="text-center text-black text-xl py-20">Loading dashboard…</p>;
+  if (!user) return (
+
+    <div className="text-center h-[500px] pt-20">
+      <p className="text-black text-2xl py-6 mb-4 ">Sign in to unlock Dashboard features</p>
+      <LockFilled className="text-3xl text-black"/>
+
+    </div>
+  )
+   else{
+
+   
 
   return (
     <div className="flex h-[calc(100vh-64px)]">
@@ -207,4 +223,5 @@ function ChartBox({ title, children, className="" }:{title:string, children:Reac
       {children}
     </div>
   );
+}
 }

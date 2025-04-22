@@ -23,8 +23,6 @@ import SignUpModal from "./components/SignUpModal";
 // import OfficePic from "@/app/Icons/officePic.jpg"
 import MoneyTrees from "@/app/Icons/money-trees.jpg"
 import MoneyPic from "@/app/Icons/moneyPic.jpg";
-// import { Streetview } from "@mui/icons-material";
-
 
 export default function Home() {
 

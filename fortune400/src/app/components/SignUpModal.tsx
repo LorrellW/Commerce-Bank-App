@@ -122,27 +122,27 @@ const SignUpModal: React.FC<SignUpModalProps> = ({ open, onClose }) => {
             <label className="block text-sm font-medium text-black">Address</label>
             <input name="street"
                    placeholder="  Street"
-                   className="input h-8 rounded-md w-full" />
+                   className="input h-8 rounded-md w-full text-black" />
           </div>
 
           <div className="grid grid-cols-2 gap-6">
             <input name="city"
                    placeholder="  City"   
-                   className="input h-8 rounded-md" />
+                   className="input h-8 rounded-md w-full text-black" />
 
             <input name="state"  
                    placeholder="  State"  
-                   className="input h-8 rounded-md" />
+                   className="input h-8 rounded-md w-full text-black" />
           </div>
 
           <div className="grid grid-cols-2 gap-6 pb-8">
             <input name="zip"     
                    placeholder="  ZIP"    
-                   className="input h-8 rounded-md" />
+                   className="input h-8 rounded-md w-full text-black" />
 
             <input name="country" 
                    placeholder="  Country" 
-                   className="input h-8 rounded-md" />
+                   className="input h-8 rounded-md w-full text-black" />
           </div>
 
           {error && <p className="text-red-600 text-sm">{error}</p>}

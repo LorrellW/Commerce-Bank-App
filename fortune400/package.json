@@ -30,6 +30,7 @@
     "recharts": "^2.15.3"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.12",
     "@eslint/eslintrc": "^3",
     "@types/node": "^20",
     "@types/pg": "^8.11.13",

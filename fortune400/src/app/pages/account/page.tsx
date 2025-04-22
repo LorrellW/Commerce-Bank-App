@@ -79,8 +79,8 @@ export default function AccountPage() {
 
   return (
     <section className="px-6 py-10">
-      <h1 className="text-5xl text-center font-light text-black pb-16">
-        {user ? `${user.firstName} ${user.lastName}` : "Guest"}&apos;s accounts
+      <h1 className="text-4xl text-center font-light text-black pb-16">
+        {user ? `${user.firstName} ${user.lastName}` : "Sign in to view account information"}
       </h1>
 
       {/* ───── account selector ───── */}
@@ -106,7 +106,7 @@ export default function AccountPage() {
       {/* ───── active account summary ───── */}
       {active && (
         <div className="overflow-x-auto mb-10">
-          <table className="min-w-full table-auto border border-gray-300 rounded">
+          <table className="min-w-[50%] table-auto border border-gray-300 rounded">
             <thead>
               <tr className="bg-gray-200 text-left text-sm uppercase text-gray-600">
                 <th className="px-6 py-3 border-b">Name</th>
@@ -127,14 +127,14 @@ export default function AccountPage() {
 
       {/* ───── transactions for the active account ───── */}
       {active && (
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto place-content-center w-1/2">
           <h2 className="text-2xl text-black mb-4">Recent transactions</h2>
           {loadingTx ? (
             <p>Loading transactions…</p>
           ) : transactions.length === 0 ? (
             <p>No transactions yet.</p>
           ) : (
-            <table className="min-w-full table-auto border border-gray-300 rounded">
+            <table className="place-content-center min-w-full table-auto border border-gray-300 rounded">
               <thead>
                 <tr className="bg-gray-200 text-left text-sm uppercase text-gray-600">
                   <th className="px-6 py-3 border-b">Date</th>
