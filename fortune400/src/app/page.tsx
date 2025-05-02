@@ -24,6 +24,7 @@ import SignUpModal from "./components/SignUpModal";
 import MoneyTrees from "@/app/Icons/money-trees.jpg"
 import MoneyPic from "@/app/Icons/moneyPic.jpg";
 
+
 export default function Home() {
 
   const [isRegisterOpen,setRegisterOpen] = useState(false);
@@ -233,8 +234,8 @@ export default function Home() {
             <p className="pt-6 text-primary">Read More <ArrowRightOutlined /> </p>
           </div>
         </section>
-
       </section>
+      
     </>
   );
 }
