@@ -81,7 +81,6 @@
 // app/(dashboard)/travel/page.tsx
 "use client";
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
 import ThreeCard from "@/app/components/threeCard";
 import axios from "axios";
 
