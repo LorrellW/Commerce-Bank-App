@@ -4,16 +4,19 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function TaxesPage() {
+export default async function TaxesPage() {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<Record<string, unknown>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const res = await fetch("/api/travel");
+  const { ideas } = await res.json();
+
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://dummyjson.com/test");
+        const response = await axios.get("https://dummyjson.com/");
         setData(response.data);
         setLoading(false);
       } catch (err: unknown) {
@@ -74,6 +77,8 @@ export default function TaxesPage() {
           </div>
         </div>
       )}
+
+      <div></div>
     </div>
   );
 }

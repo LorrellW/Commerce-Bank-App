@@ -25,7 +25,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ message, onClose }) => {
         onClick={onClose} 
       />
       {/* Modal content */}
-      <div className="bg-white rounded-lg shadow-lg p-6 z-10">
+      <div className="bg-blue-500 rounded-lg shadow-lg p-6 z-10">
         <p className="text-xl text-black font-semibold text-center">{message}</p>
       </div>
     </div>

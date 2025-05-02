@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useUser } from "@/app/context/UserContext";
+import VoiceflowChatbot from "@/app/components/VoiceFlowChatbot";
 
 /* ─────────────── types that match the API ─────────────── */
 interface AccountAPI {
@@ -159,6 +160,11 @@ export default function AccountPage() {
           )}
         </div>
       )}
+      {/* <div className="text-black text-center">
+      <CustomerData/>
+      </div> */}
+      <VoiceflowChatbot/>
+      
     </section>
   );
 }

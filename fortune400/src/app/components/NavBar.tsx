@@ -104,8 +104,8 @@ const Navbar: React.FC = () => {
             Dashboard
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
           </Link>
-          <Link href="/pages/services" className="relative group text-black hover:text-orange-700">
-            Services
+          <Link href="/pages/travelAgent" className="relative group text-black hover:text-orange-700">
+            Y.O.T.A
             <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
           </Link>
           <Link href="/pages/profile" className="relative group text-black hover:text-orange-700">
@@ -192,11 +192,11 @@ const Navbar: React.FC = () => {
                 <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link
-                href="/pages/services"
+                href="/pages/travelAgent"
                 onClick={() => setIsOpen(false)}
                 className="relative group text-black hover:text-orange-700"
               >
-                Services
+                YOTA
                 <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
               </Link>
               <Link

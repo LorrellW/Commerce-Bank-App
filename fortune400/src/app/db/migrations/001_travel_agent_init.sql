@@ -25,6 +25,13 @@ CREATE TABLE IF NOT EXISTS past_trip (
 );
 
 /* 3. airport … unchanged */
+CREATE TABLE IF NOT EXISTS airport (
+  iata CHAR(3) PRIMARY KEY,
+  city TEXT,
+  state TEXT,
+  country TEXT,
+  passengers BIGINT
+);
 
 /* 4. view */
 CREATE OR REPLACE VIEW vw_travel_context AS
