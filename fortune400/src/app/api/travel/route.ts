@@ -150,15 +150,15 @@
 //   }
 // }
 
-// app/api/travel/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import { getTravelContext } from "@/app/context/getUserTravelContext";
-import { getTravelIdeas } from "@/lib/ai/getTravelIdeas";
+// // app/api/travel/route.ts
+// import { NextRequest, NextResponse } from "next/server";
+// import { getTravelContext } from "@/app/context/getUserTravelContext";
+// import { getTravelIdeas } from "@/lib/ai/getTravelIdeas";
 
-export async function GET(req: NextRequest) {
-  const userId = req.headers.get("x-user-id")!; // or session cookie
-  const ctx = await getTravelContext(userId);
-  const ideas = await getTravelIdeas(ctx);
-  return NextResponse.json({ ideas });
-}
+// export async function GET(req: NextRequest) {
+//   const userId = req.headers.get("x-user-id")!; // or session cookie
+//   const ctx = await getTravelContext(userId);
+//   const ideas = await getTravelIdeas(ctx);
+//   return NextResponse.json({ ideas });
+// }
 

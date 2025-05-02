@@ -78,60 +78,66 @@
 //   );
 // }
 
-// app/(dashboard)/travel/page.tsx
 "use client";
-import Link from "next/link";
-import ThreeCard from "@/app/components/threeCard";
+
+import { useState } from "react";
 import axios from "axios";
 
 export default function TravelAdvisor() {
-  // const { data, isLoading, error } = useQuery({
-  //   queryKey: ["travelIdeas"],
-  //   queryFn: () => axios.get("/api/travel").then(res => res.data.ideas)
-  // });
+  const [prompt, setPrompt] = useState("");
+  const [reply, setReply] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // if (isLoading) return <p>Loading trip ideas…</p>;
-  // if (error)     return <p>Something went wrong.</p>;
+  async function handleSubmit() {
+    setLoading(true);
+    setError(null);
+    setReply(null);
+
+    try {
+      const res = await axios.post<{ text: string }>("/api/gemini", {
+        prompt,
+      });
+      setReply(res.data.text);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
-    <div>
-          <h1 className="text-black font-serif text-center text-4xl p-5
-          ">Y.O.T.A <br/></h1>
-          <p className="text-center font-sans"> Your very own travel agent.</p>
-          <span className="flex place-content-end pt-6">
-          <input className="border-2 border-blue-200 text-center"
-            placeholder="Local Airport"
-            name="Airport">
-          </input>
+    <div className="p-8 max-w-xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4">Gemini Playground</h1>
 
-          <input className=" border-2 border-blue-200 text-center mr-20"
-            placeholder=" ="
-            name="Airport filled in">
-            </input>
-            </span>
-          <ThreeCard />
+      <textarea
+        className="w-full p-2 border rounded mb-4"
+        rows={4}
+        placeholder="Type anything—e.g. “Tell me a unicorn bedtime story.”"
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+      />
 
-          <div className="grid grid-cols-3">
-            <Link
-              className="grid col-start-2 place-items-center justify-self-center bg-blue-600  w-36 h-20" 
-              href={'./Taxes'}>Taxes Page
-            </Link>
+      <button
+        onClick={handleSubmit}
+        disabled={loading || !prompt.trim()}
+        className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
+      >
+        {loading ? "Thinking…" : "Submit"}
+      </button>
 
-          </div> 
-          
-     
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {/* // <article key={trip.title} className="rounded-2xl shadow p-4">
-        //   <h3 className="text-xl font-bold mb-2">{trip.title}</h3>
-        //   <p className="italic text-sm mb-2">{trip.whyItMatches}</p>
-        //   <p className="mb-2">{trip.summary}</p>
-        //   <p className="font-semibold">Duration: {trip.days} days</p>
-        //   <p className="font-semibold">Est. Cost: ${trip.estCostUSD.toLocaleString()}</p>
-        // </article> */}
+      {error && <p className="text-red-600 mt-4">{error}</p>}
+
+      {reply && (
+        <pre className="mt-4 p-4 bg-gray-100 rounded whitespace-pre-wrap">
+          {reply}
+        </pre>
+      )}
     </div>
-    </div> 
   );
 }
+
+
 
 // 
 
