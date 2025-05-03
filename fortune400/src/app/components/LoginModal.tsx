@@ -1,139 +1,110 @@
+// components/LoginModal.tsx
 "use client";
 
 import { useState, FormEvent } from "react";
 import { signIn } from "@/../Firbase/firebaseAuthService";
-import { LockOutlined } from "@ant-design/icons"; 
+import { LockOutlined } from "@ant-design/icons";
 import SuccessModal from "./SuccessModal";
+import { useUser } from "@/app/context/UserContext";
+import axios from "axios";
 
-interface SignInModalProps {
+interface LoginModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-const SignInModal: React.FC<SignInModalProps> = ({ open, onClose }) => {
+export default function LoginModal({ open, onClose }: LoginModalProps) {
+  const { setUser } = useUser();       // ← pull in setUser
   const [error, setError] = useState<string | null>(null);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setError(null);
 
-    const data = new FormData(event.currentTarget);
+    const data = new FormData(e.currentTarget);
     const email = data.get("email") as string;
     const password = data.get("password") as string;
 
     try {
-      const user = await signIn(email, password);
-      // Use displayName if available, otherwise fallback to email
-      const displayName = user.displayName || email;
-      setSuccessMessage(`${displayName} successfully signed in.`);
-      setShowSuccessModal(true);
-      console.log("User signed in successfully:", user.displayName);
-      // Remove onClose() here so that the success modal can be seen
-    } catch (err: unknown) {
-      console.error("Error signing in:", err);
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An error occurred during sign in.");
-      }
+      // 1. Sign in with Firebase
+      const fbUser = await signIn(email, password);
+
+      // 2. Fetch your customer record to get cID, firstName, lastName
+      const { data: profile } = await axios.get("/api/getCustomer", {
+        params: { uid: fbUser.uid },
+      });
+      // assume profile = { customer: { cID, firstName, lastName } }
+
+      // 3. Populate your UserContext exactly as Sign-Up does
+      setUser({
+        uid:         fbUser.uid,
+        email:       fbUser.email || email,
+        displayName: fbUser.displayName || "",
+        firstName:   profile.customer.firstName,
+        lastName:    profile.customer.lastName,
+        cID:         profile.customer.cID,
+      });
+
+      // 4. Show success and close
+      setSuccessMsg(`Welcome back, ${profile.customer.firstName}!`);
+      setShowSuccess(true);
+    } catch (err: any) {
+      console.error("Login error:", err);
+      setError(err.message || "Unable to sign in");
     }
   };
 
-  // Handler for closing the success modal and then the login modal
-  const handleSuccessModalClose = () => {
-    setShowSuccessModal(false);
+  const handleSuccessClose = () => {
+    setShowSuccess(false);
     onClose();
   };
 
   if (!open) return null;
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-blue-100 rounded-lg shadow-lg w-full max-w-sm p-7 relative">
-        <div className="flex flex-col items-center">
-          <div className="py-2 text-3xl rounded-full text-blue-700">
-            <LockOutlined className="" />
-          </div>
-          <h2 className="text-3xl text-slate-500 font-normal mb-4">Login</h2>
-        </div>
-
+      <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-6 relative">
+        <h2 className="text-xl font-semibold mb-4">Log In</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-black">
-              Email Address
-            </label>
+            <label className="block text-sm mb-1">Email</label>
             <input
-              id="email"
               name="email"
               type="email"
               required
-              autoComplete="email"
-              className="mt-1 w-full rounded-md border border-gray-300 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full border px-3 py-2 rounded"
             />
           </div>
-
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
+            <label className="block text-sm mb-1">Password</label>
             <input
-              id="password"
               name="password"
               type="password"
               required
-              autoComplete="current-password"
-              className="mt-1 w-full rounded-md border border-gray-300 text-black px-3 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full border px-3 py-2 rounded"
             />
           </div>
-
-          <div className="flex items-center">
-            <input
-              id="remember"
-              name="remember"
-              type="checkbox"
-              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-            />
-            <label htmlFor="remember" className="ml-2 block text-sm text-gray-700">
-              Remember me
-            </label>
-          </div>
-
           {error && <p className="text-red-600 text-sm">{error}</p>}
-
           <button
             type="submit"
-            className="w-full bg-primary text-white py-2 rounded-md hover:bg-primary-dark transition"
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
           >
-            Login
+            Sign In
           </button>
         </form>
 
-        <div className="flex justify-between mt-4 text-sm">
-          <a href="#" className="text-primary hover:underline">
-            Forgot password?
-          </a>
-          <a href="#" className="text-primary hover:underline">
-            Don’t have an account? Sign Up
-          </a>
-        </div>
+        {showSuccess && (
+          <SuccessModal message={successMsg} onClose={handleSuccessClose} />
+        )}
 
         <button
           onClick={onClose}
-          className="absolute top-3 right-3 text-gray-700 hover:text-gray-700 text-md"
+          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
         >
-          ✕
+          ×
         </button>
-
-        {/* Success Modal */}
-        {showSuccessModal && (
-          <SuccessModal message={successMessage} onClose={handleSuccessModalClose} />
-        )}
       </div>
     </div>
   );
-};
-
-export default SignInModal;
-
+}
