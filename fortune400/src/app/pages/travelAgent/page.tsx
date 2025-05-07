@@ -39,10 +39,7 @@ export default function TravelAdvisor() {
   return (
     <Protected isAuthenticated={isAuthenticated}>
       <div className="p-8 bg-blue-500 max-w-xl h-auto mx-auto">
-        <Image src={GYL}
-        alt="gemini generated letters">
-          
-        </Image>
+
         <Image src={GYA}
         alt="gemini generated "
         className="object-contain">
