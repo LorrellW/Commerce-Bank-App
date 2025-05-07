@@ -30,6 +30,6 @@
     ".next/types/**/*.ts", 
     "src/app/pages/Taxes/page.tsx", 
     "src/app/components/VoiceFlowChatbot.tsx"
-  ],
+, "src/app/components/ChartCard.js"  ],
   "exclude": ["node_modules"]
 }

@@ -5,6 +5,9 @@ import { useState } from "react";
 import axios from "axios";
 import Protected from "@/app/components/Protected";
 import { useUser } from "@/app/context/UserContext"; // your auth hook
+import Image from "next/image";
+import GYA from "../../../../public/gemini-yota-avatar.jpg"
+import GYL from "../../../../public/gemini-yota-letters.jpg"
 
 export default function TravelAdvisor() {
   const { user } = useUser();
@@ -35,8 +38,16 @@ export default function TravelAdvisor() {
 
   return (
     <Protected isAuthenticated={isAuthenticated}>
-      <div className="p-8 max-w-xl mx-auto">
-        <h1 className="text-2xl font-bold mb-4">Gemini Playground</h1>
+      <div className="p-8 bg-blue-500 max-w-xl h-auto mx-auto">
+        <Image src={GYL}
+        alt="gemini generated letters">
+          
+        </Image>
+        <Image src={GYA}
+        alt="gemini generated "
+        className="object-contain">
+      
+        </Image>
 
         <textarea
           className="w-full p-2 border rounded mb-4"

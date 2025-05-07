@@ -63,7 +63,7 @@ export default function Home() {
       </p>
       <button 
         onClick={handleSignUpOpen}
-        className="bg-primary mt-4 text-sm rounded w-[30%] max-h-10 h-[30%]"
+        className="bg-primary text-secondary mt-4 text-sm rounded w-[30%] max-h-10 h-[30%]"
       >
         Register
       </button>
@@ -127,7 +127,7 @@ export default function Home() {
                 With reliable banking and reporting at your fingertips, you&apos;re allowed to customize your budgeting software however you&apos;d like, making banking
                 less of a hassle and personal to you. 
               </p>
-              <button className="bg-primary mt-6 py-2 text-sm rounded w-[30%] h-[30%]">
+              <button className="bg-primary text-secondary mt-6 py-2 text-sm rounded w-[30%] h-[30%]">
                 Learn More
               </button>
             </div>
@@ -194,7 +194,7 @@ export default function Home() {
               <p className="lg:text-md text-lg text-lightText"> <br/> Fortune400 provides an easy way to categorize your spending, whether you want to be hands-on or off with each transaction. 
                 Our models will correctly total each expense or deposit to give you an accurate finance report you can trust.
                 <br/> </p>
-              <button className="bg-primary mt-6 py-2 text-sm rounded w-[30%] h-[30%]"> 
+              <button className="bg-primary text-secondary mt-6 py-2 text-sm rounded w-[30%] h-[30%]"> 
                 Learn More
               </button>
             </div>
