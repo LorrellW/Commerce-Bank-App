@@ -12,6 +12,7 @@ import SignUpModal from "@/app/components/SignUpModal";
 import SuccessModal from "@/app/components/SuccessModal";
 import { getAuth, onAuthStateChanged, signOut, User as FirebaseUser } from "firebase/auth";
 import app from "@/../Firbase/firebaseConfig";
+import GYL from "../../../public/gemini-yota-letters.jpg"
 
 const auth = getAuth(app);
 
@@ -74,6 +75,15 @@ const Navbar: React.FC = () => {
     }
   };
 
+  function NavLink({ href, children }: { href: string; children: React.ReactNode }) {
+    return (
+      <Link href={href} className="relative group inline-block text-black hover:text-orange-700">
+        {children}
+        <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-blue-500 transition-all duration-300 group-hover:w-full" />
+      </Link>
+    );
+  }
+
 
   return (
     <nav className="navbar top grid grid-cols-3 items-center px-8 py-4 bg-white">
@@ -89,35 +99,33 @@ const Navbar: React.FC = () => {
         />
       </div>
 
-      {/* Center Section - Navigation Links */}
-      <div className="flex items-center justify-center">
-        <div className="hidden lg:flex space-x-8 font-geist-mono text-sm">
-          <Link href="/" className="relative group text-black hover:text-orange-700">
-            Home
-            <span className="absolute left-0 -top-3 h-1 w-auto bg-orange-300 transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link href="/pages/account" className="relative group text-black hover:text-orange-700">
-            Account
-            <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link href="/pages/dashboard" className="relative group text-black hover:text-orange-700">
-            Dashboard
-            <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link href="/pages/travelAgent" className="relative group text-black hover:text-orange-700">
-            Y.O.T.A
-            <span className="absolute left-0 -bottom-1 h-1 w-0 bg-blue-500 transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link href="/pages/profile" className="relative group text-black hover:text-orange-700">
-            Profile
-            <span className="absolute left-0 -top-3 h-1 w-auto bg-orange-300 transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-          <Link href="/pages/settings" className="relative group text-black hover:text-orange-700">
-            Settings
-            <span className="absolute left-0 -top-3 h-1 w-auto bg-orange-300 transition-all duration-300 group-hover:w-full"></span>
-          </Link>
-        </div>
-      </div>
+      {/* Center Section – Navigation */}
+<div className="flex items-center justify-center">
+  <nav className="hidden lg:flex space-x-8 font-geist-mono text-sm">
+
+    <NavLink href="/">Home</NavLink>
+    <NavLink href="/pages/account">Account</NavLink>
+    <NavLink href="/pages/dashboard">Dashboard</NavLink>
+
+    {/* YOTA logo link */}
+    <Link
+      href="/pages/travelAgent"
+      className="relative group inline-block"
+    >
+      <Image
+        src={GYL}
+        alt="YOTA travel advisor"
+        className="p-0 -mt-7 h-auto w-20" 
+        priority
+      />
+      <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-blue-500 transition-all duration-300 group-hover:w-full" />
+    </Link>
+
+    <NavLink href="/pages/profile">Profile</NavLink>
+    <NavLink href="/pages/settings">Settings</NavLink>
+
+  </nav>
+</div>
 
       {/* Right Section - Login/Signup or Sign Out */}
       <div className="lg:grid hidden">
