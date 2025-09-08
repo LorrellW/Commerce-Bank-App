@@ -1,6 +1,7 @@
 # Commerce-Bank-App
 Commerce-Bank-App is a modern, high-performance web application for core banking tasks like account management and transaction processing. Built on **React** with **Next.js** and file-based routing for seamless navigation, it leverages **Tailwind CSS** for efficient styling. A **SQL** database ensures robust data persistence, while the **latest Node.js** and **npm** power the stack. Developed in **Visual Studio Code (VS Code)**.
 
+<img width="1894" height="868" alt="image" src="https://github.com/user-attachments/assets/db68480b-0689-4d2e-9e32-8134a31e6189" />
 
 ---
 
